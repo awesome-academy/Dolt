@@ -5,17 +5,17 @@ import android.arch.persistence.room.*
 import com.sun.doitpat.util.Constants.TODO_TABLE_NAME
 
 @Dao
-interface ToDoDAO {
+interface ToDoDao {
 
     @Query("SELECT * FROM $TODO_TABLE_NAME")
-    fun getAll(): LiveData<List<ToDo>>
+    suspend fun getAll(): LiveData<List<ToDo>>
 
     @Insert
-    fun insert(toDo: ToDo)
+    suspend fun insert(toDo: ToDo)
 
     @Update
-    fun update(toDo: ToDo)
+    suspend fun update(toDo: ToDo)
 
     @Delete
-    fun delete(toDo: ToDo)
+    suspend fun delete(toDo: ToDo)
 }
