@@ -5,12 +5,12 @@ import android.arch.persistence.room.Room
 import android.arch.persistence.room.RoomDatabase
 import android.content.Context
 import com.sun.doitpat.data.model.ToDo
-import com.sun.doitpat.data.model.ToDoDAO
+import com.sun.doitpat.data.model.ToDoDao
 
 @Database(entities = [ToDo::class], version = 1)
 abstract class AppDatabase : RoomDatabase() {
 
-    abstract fun toDoDao(): ToDoDAO
+    abstract fun toDoDao(): ToDoDao
 
     companion object {
 
