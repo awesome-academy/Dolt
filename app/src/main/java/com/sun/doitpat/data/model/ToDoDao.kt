@@ -1,7 +1,7 @@
 package com.sun.doitpat.data.model
 
-import android.arch.lifecycle.LiveData
-import android.arch.persistence.room.*
+import androidx.lifecycle.LiveData
+import androidx.room.*
 import com.sun.doitpat.util.Constants.TODO_TABLE_NAME
 
 @Dao
