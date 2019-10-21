@@ -1,6 +1,5 @@
 package com.sun.doitpat.data.model
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.sun.doitpat.util.Constants.TODO_TABLE_NAME
 
@@ -8,7 +7,7 @@ import com.sun.doitpat.util.Constants.TODO_TABLE_NAME
 interface ToDoDao {
 
     @Query("SELECT * FROM $TODO_TABLE_NAME")
-    suspend fun getAll(): LiveData<List<ToDo>>
+    suspend fun getAll(): List<ToDo>
 
     @Insert
     suspend fun insert(toDo: ToDo)
