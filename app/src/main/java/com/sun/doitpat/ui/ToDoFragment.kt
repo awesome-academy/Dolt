@@ -1,7 +1,7 @@
 package com.sun.doitpat.ui
 
 import android.os.Bundle
-import androidx.databinding.ViewDataBinding
+import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.sun.doitpat.BR
@@ -11,10 +11,10 @@ import com.sun.doitpat.base.ViewModelFactory
 import com.sun.doitpat.data.repository.ToDoRepository
 import com.sun.doitpat.data.repository.impl.ToDoRepositoryImpl
 import com.sun.doitpat.data.source.local.AppDatabase
+import com.sun.doitpat.databinding.FragmentMainBinding
 import kotlinx.android.synthetic.main.fragment_main.*
 
-
-class ToDoFragment : BaseFragment<ViewDataBinding, ToDoViewModel>() {
+class ToDoFragment : BaseFragment<FragmentMainBinding, ToDoViewModel>() {
 
     override val layoutId: Int
         get() = R.layout.fragment_main
@@ -32,11 +32,13 @@ class ToDoFragment : BaseFragment<ViewDataBinding, ToDoViewModel>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         createViewModel()
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         recyclerView.adapter = toDoAdapter
-        toDoViewModel.getList().observe(this, Observer {
+        toDoViewModel.getList().observe(viewLifecycleOwner, Observer {
             it?.let(toDoAdapter::submitList)
         })
     }

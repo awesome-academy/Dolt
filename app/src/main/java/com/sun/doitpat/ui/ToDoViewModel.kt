@@ -1,6 +1,6 @@
 package com.sun.doitpat.ui
 
-import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.sun.doitpat.base.BaseViewModel
 import com.sun.doitpat.data.model.ToDo
@@ -9,11 +9,11 @@ import kotlinx.coroutines.launch
 
 class ToDoViewModel(private val toDoRepository: ToDoRepository) : BaseViewModel() {
 
-    private lateinit var toDos: LiveData<List<ToDo>>
+    private var toDos: MutableLiveData<List<ToDo>> = MutableLiveData()
 
     init {
         viewModelScope.launch {
-            toDos = toDoRepository.getAllToDo()
+            toDos.value = toDoRepository.getAllToDo()
         }
     }
 

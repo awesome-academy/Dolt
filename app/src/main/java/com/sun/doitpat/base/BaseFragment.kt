@@ -33,7 +33,7 @@ abstract class BaseFragment<T : ViewDataBinding, V : BaseViewModel> : Fragment()
         super.onViewCreated(view, savedInstanceState)
         viewDataBinding?.apply {
             setVariable(bindingVariable, viewModel)
-            lifecycleOwner = this as LifecycleOwner
+            lifecycleOwner = viewLifecycleOwner
             executePendingBindings()
         }
     }
