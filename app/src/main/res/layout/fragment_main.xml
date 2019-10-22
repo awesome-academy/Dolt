@@ -5,7 +5,7 @@
 
         <variable
             name="list"
-            type="com.sun.doitpat.ui.ToDoViewModel" />
+            type="com.sun.doitpat.ui.home.ToDoViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -22,6 +22,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/cardAddItem"
             android:layout_width="@dimen/dp_240"
             android:layout_height="@dimen/dp_48"
             android:layout_marginTop="@dimen/dp_24"

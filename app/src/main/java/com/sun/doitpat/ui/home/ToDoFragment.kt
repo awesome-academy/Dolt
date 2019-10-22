@@ -1,4 +1,4 @@
-package com.sun.doitpat.ui
+package com.sun.doitpat.ui.home
 
 import android.os.Bundle
 import android.view.View

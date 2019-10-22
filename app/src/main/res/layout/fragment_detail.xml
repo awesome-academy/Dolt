@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.sun.doitpat.data.model.ToDo" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/layoutToDo"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp_64"
+            android:layout_marginTop="@dimen/dp_24"
+            android:background="@drawable/fragment_background"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:cardBackgroundColor="@color/color_accent"
+            app:cardCornerRadius="@dimen/dp_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="@dimen/dp_32"
+                android:layout_height="@dimen/dp_32"
+                android:layout_margin="@dimen/dp_8"
+                app:cardBackgroundColor="@color/color_red"
+                app:cardCornerRadius="@dimen/dp_24" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="@dimen/dp_32"
+                android:layout_height="@dimen/dp_32"
+                android:layout_margin="@dimen/dp_8"
+                app:cardBackgroundColor="@color/color_orange"
+                app:cardCornerRadius="@dimen/dp_24" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="@dimen/dp_32"
+                android:layout_height="@dimen/dp_32"
+                android:layout_margin="@dimen/dp_8"
+                app:cardBackgroundColor="@color/color_yellow"
+                app:cardCornerRadius="@dimen/dp_24" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="@dimen/dp_32"
+                android:layout_height="@dimen/dp_32"
+                android:layout_margin="@dimen/dp_8"
+                app:cardBackgroundColor="@color/color_green"
+                app:cardCornerRadius="@dimen/dp_24" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="@dimen/dp_32"
+                android:layout_height="@dimen/dp_32"
+                android:layout_margin="@dimen/dp_8"
+                app:cardBackgroundColor="@color/color_blue"
+                app:cardCornerRadius="@dimen/dp_24" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="@dimen/dp_32"
+                android:layout_height="@dimen/dp_32"
+                android:layout_margin="@dimen/dp_8"
+                app:cardBackgroundColor="@color/color_accent"
+                app:cardCornerRadius="@dimen/dp_24" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="@dimen/dp_32"
+                android:layout_height="@dimen/dp_32"
+                android:layout_margin="@dimen/dp_8"
+                app:cardBackgroundColor="@color/color_gray"
+                app:cardCornerRadius="@dimen/dp_24" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_24"
+            android:background="@drawable/fragment_background"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layoutToDo">
+
+            <EditText
+                android:id="@+id/editTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dp_32"
+                android:autofillHints="@string/title_title"
+                android:ems="10"
+                android:hint="@string/title_title"
+                android:inputType="textPersonName"
+                android:text="@string/title_title"
+                android:textSize="@dimen/sp_16"
+                tools:targetApi="o" />
+
+            <EditText
+                android:id="@+id/editDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dp_32"
+                android:autofillHints="@string/title_description"
+                android:ems="10"
+                android:hint="@string/title_description"
+                android:inputType="textPersonName"
+                android:text="@string/title_description"
+                android:textColor="@color/color_sub_text"
+                android:textSize="@dimen/sp_16"
+                tools:targetApi="o" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_64"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="@dimen/dp_120"
+                    android:layout_height="@dimen/dp_48"
+                    android:layout_margin="@dimen/dp_32"
+                    android:background="@drawable/fragment_background_color_border"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/textSetTime"
+                        android:layout_width="@dimen/dp_24"
+                        android:layout_height="@dimen/dp_24"
+                        android:layout_gravity="center"
+                        android:foreground="@drawable/ic_add_alarm_purple_24dp"
+                        android:gravity="center" />
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/editPlace"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/dp_32"
+                    android:autofillHints="@string/title_place"
+                    android:hint="@string/title_place"
+                    android:inputType="text"
+                    android:text="@string/title_place"
+                    android:textSize="@dimen/sp_16"
+                    tools:targetApi="o" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textTime"
+                android:layout_width="@dimen/dp_120"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_32"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="@dimen/dp_32"
+                android:gravity="center"
+                android:textSize="@dimen/sp_14" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutOption"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp_64"
+            android:layout_marginBottom="@dimen/dp_32"
+            android:background="@drawable/fragment_background_color"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <TextView
+                android:layout_width="@dimen/dp_32"
+                android:layout_height="@dimen/dp_32"
+                android:background="@drawable/ic_check_black_24dp"
+                android:gravity="center" />
+
+            <Button
+                android:id="@+id/buttonSave"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="@dimen/dp_64"
+                android:layout_height="@dimen/dp_48"
+                android:background="@color/color_accent"
+                android:text="@string/title_cancel"
+                android:textColor="@color/color_white" />
+
+            <TextView
+                android:layout_width="@dimen/dp_32"
+                android:layout_height="@dimen/dp_32"
+                android:layout_marginStart="@dimen/dp_84"
+                android:background="@drawable/ic_close_black_24dp"
+                android:gravity="center" />
+
+            <Button
+                android:id="@+id/buttonCancel"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="@dimen/dp_64"
+                android:layout_height="@dimen/dp_48"
+                android:background="@color/color_accent"
+                android:text="@string/title_save"
+                android:textColor="@color/color_white" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

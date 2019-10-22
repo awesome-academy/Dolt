@@ -1,4 +1,4 @@
-package com.sun.doitpat.ui
+package com.sun.doitpat.ui.home
 
 import com.sun.doitpat.R
 import com.sun.doitpat.data.model.ToDo
