@@ -1,4 +1,4 @@
-package com.sun.doitpat.ui
+package com.sun.doitpat.ui.home
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
