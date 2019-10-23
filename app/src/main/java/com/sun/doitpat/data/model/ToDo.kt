@@ -1,14 +1,15 @@
 package com.sun.doitpat.data.model
 
+import android.graphics.Color
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity
-data class ToDo (
+data class ToDo(
 
     @PrimaryKey(autoGenerate = true)
-    val id: Int,
+    var id: Int = 0,
 
     @ColumnInfo(name = "title")
     val title: String,
@@ -23,8 +24,8 @@ data class ToDo (
     val place: String,
 
     @ColumnInfo(name = "color")
-    val color: Int,
+    var color: Int = Color.WHITE,
 
     @ColumnInfo(name = "status")
-    var status: Int
+    var status: Int = 0
 )
