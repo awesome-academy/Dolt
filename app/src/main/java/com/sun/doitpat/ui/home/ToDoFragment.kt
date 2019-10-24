@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.Navigation
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.sun.doitpat.BR
 import com.sun.doitpat.R
 import com.sun.doitpat.base.BaseFragment
@@ -37,8 +39,11 @@ class ToDoFragment : BaseFragment<FragmentMainBinding, ToDoViewModel>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        recyclerView.adapter = toDoAdapter
-        toDoViewModel.getList().observe(viewLifecycleOwner, Observer {
+        recyclerView.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = toDoAdapter
+        }
+        toDoViewModel.list.observe(viewLifecycleOwner, Observer {
             it?.let(toDoAdapter::submitList)
         })
     }

@@ -7,7 +7,7 @@
 
         <variable
             name="item"
-            type="com.sun.doitpat.data.model.ToDo" />
+            type="com.sun.doitpat.ui.detail.DetailViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -98,7 +98,7 @@
                 android:ems="10"
                 android:hint="@string/title_title"
                 android:inputType="textPersonName"
-                android:text="@string/title_title"
+                android:text="@{item.title}"
                 android:textSize="@dimen/sp_16"
                 tools:targetApi="o" />
 
@@ -111,7 +111,7 @@
                 android:ems="10"
                 android:hint="@string/title_description"
                 android:inputType="textPersonName"
-                android:text="@string/title_description"
+                android:text="@{item.description}"
                 android:textColor="@color/color_sub_text"
                 android:textSize="@dimen/sp_16"
                 tools:targetApi="o" />
@@ -147,7 +147,7 @@
                     android:autofillHints="@string/title_place"
                     android:hint="@string/title_place"
                     android:inputType="text"
-                    android:text="@string/title_place"
+                    android:text="@{item.place}"
                     android:textSize="@dimen/sp_16"
                     tools:targetApi="o" />
             </LinearLayout>
@@ -160,6 +160,7 @@
                 android:layout_marginTop="0dp"
                 android:layout_marginBottom="@dimen/dp_32"
                 android:gravity="center"
+                android:text="@{item.time}"
                 android:textSize="@dimen/sp_14" />
         </LinearLayout>
 
@@ -179,11 +180,11 @@
             <TextView
                 android:layout_width="@dimen/dp_32"
                 android:layout_height="@dimen/dp_32"
-                android:background="@drawable/ic_check_black_24dp"
+                android:background="@drawable/ic_close_black_24dp"
                 android:gravity="center" />
 
             <Button
-                android:id="@+id/buttonSave"
+                android:id="@+id/buttonCancel"
                 style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_width="@dimen/dp_64"
                 android:layout_height="@dimen/dp_48"
@@ -195,15 +196,16 @@
                 android:layout_width="@dimen/dp_32"
                 android:layout_height="@dimen/dp_32"
                 android:layout_marginStart="@dimen/dp_84"
-                android:background="@drawable/ic_close_black_24dp"
+                android:background="@drawable/ic_check_black_24dp"
                 android:gravity="center" />
 
             <Button
-                android:id="@+id/buttonCancel"
+                android:id="@+id/buttonSave"
                 style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_width="@dimen/dp_64"
                 android:layout_height="@dimen/dp_48"
                 android:background="@color/color_accent"
+                android:onClick="@{() -> item.add()}"
                 android:text="@string/title_save"
                 android:textColor="@color/color_white" />
 

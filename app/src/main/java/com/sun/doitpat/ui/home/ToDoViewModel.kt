@@ -9,13 +9,12 @@ import kotlinx.coroutines.launch
 
 class ToDoViewModel(private val toDoRepository: ToDoRepository) : BaseViewModel() {
 
-    private var toDos: MutableLiveData<List<ToDo>> = MutableLiveData()
+    val list = MutableLiveData<List<ToDo>>()
 
     init {
         viewModelScope.launch {
-            toDos.value = toDoRepository.getAllToDo()
+            list.value = toDoRepository.getAllToDo()
         }
     }
 
-    fun getList() = toDos
 }
