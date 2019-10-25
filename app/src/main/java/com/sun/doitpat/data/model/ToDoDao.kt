@@ -9,7 +9,7 @@ interface ToDoDao {
     @Query("SELECT * FROM $TODO_TABLE_NAME")
     suspend fun getAll(): List<ToDo>
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(toDo: ToDo)
 
     @Update

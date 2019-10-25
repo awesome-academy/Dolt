@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sun.doitpat.BR
 import com.sun.doitpat.R
@@ -44,7 +43,7 @@ class ToDoFragment : BaseFragment<FragmentMainBinding, ToDoViewModel>() {
             adapter = toDoAdapter
         }
         toDoViewModel.list.observe(viewLifecycleOwner, Observer {
-            it?.let(toDoAdapter::submitList)
+            toDoAdapter.submitList(it)
         })
     }
 

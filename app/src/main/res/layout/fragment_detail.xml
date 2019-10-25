@@ -32,6 +32,7 @@
                 android:layout_width="@dimen/dp_32"
                 android:layout_height="@dimen/dp_32"
                 android:layout_margin="@dimen/dp_8"
+                android:onClick="@{() -> item.addColor(1)}"
                 app:cardBackgroundColor="@color/color_red"
                 app:cardCornerRadius="@dimen/dp_24" />
 
@@ -39,6 +40,7 @@
                 android:layout_width="@dimen/dp_32"
                 android:layout_height="@dimen/dp_32"
                 android:layout_margin="@dimen/dp_8"
+                android:onClick="@{() -> item.addColor(2)}"
                 app:cardBackgroundColor="@color/color_orange"
                 app:cardCornerRadius="@dimen/dp_24" />
 
@@ -46,6 +48,7 @@
                 android:layout_width="@dimen/dp_32"
                 android:layout_height="@dimen/dp_32"
                 android:layout_margin="@dimen/dp_8"
+                android:onClick="@{() -> item.addColor(3)}"
                 app:cardBackgroundColor="@color/color_yellow"
                 app:cardCornerRadius="@dimen/dp_24" />
 
@@ -53,6 +56,7 @@
                 android:layout_width="@dimen/dp_32"
                 android:layout_height="@dimen/dp_32"
                 android:layout_margin="@dimen/dp_8"
+                android:onClick="@{() -> item.addColor(4)}"
                 app:cardBackgroundColor="@color/color_green"
                 app:cardCornerRadius="@dimen/dp_24" />
 
@@ -60,6 +64,7 @@
                 android:layout_width="@dimen/dp_32"
                 android:layout_height="@dimen/dp_32"
                 android:layout_margin="@dimen/dp_8"
+                android:onClick="@{() -> item.addColor(5)}"
                 app:cardBackgroundColor="@color/color_blue"
                 app:cardCornerRadius="@dimen/dp_24" />
 
@@ -67,6 +72,7 @@
                 android:layout_width="@dimen/dp_32"
                 android:layout_height="@dimen/dp_32"
                 android:layout_margin="@dimen/dp_8"
+                android:onClick="@{() -> item.addColor(6)}"
                 app:cardBackgroundColor="@color/color_accent"
                 app:cardCornerRadius="@dimen/dp_24" />
 
@@ -74,6 +80,7 @@
                 android:layout_width="@dimen/dp_32"
                 android:layout_height="@dimen/dp_32"
                 android:layout_margin="@dimen/dp_8"
+                android:onClick="@{() -> item.addColor(7)}"
                 app:cardBackgroundColor="@color/color_gray"
                 app:cardCornerRadius="@dimen/dp_24" />
 
@@ -98,7 +105,7 @@
                 android:ems="10"
                 android:hint="@string/title_title"
                 android:inputType="textPersonName"
-                android:text="@{item.title}"
+                android:text="@={item.title}"
                 android:textSize="@dimen/sp_16"
                 tools:targetApi="o" />
 
@@ -111,7 +118,7 @@
                 android:ems="10"
                 android:hint="@string/title_description"
                 android:inputType="textPersonName"
-                android:text="@{item.description}"
+                android:text="@={item.description}"
                 android:textColor="@color/color_sub_text"
                 android:textSize="@dimen/sp_16"
                 tools:targetApi="o" />
@@ -147,7 +154,7 @@
                     android:autofillHints="@string/title_place"
                     android:hint="@string/title_place"
                     android:inputType="text"
-                    android:text="@{item.place}"
+                    android:text="@={item.place}"
                     android:textSize="@dimen/sp_16"
                     tools:targetApi="o" />
             </LinearLayout>
@@ -160,7 +167,7 @@
                 android:layout_marginTop="0dp"
                 android:layout_marginBottom="@dimen/dp_32"
                 android:gravity="center"
-                android:text="@{item.time}"
+                android:text="@={item.time}"
                 android:textSize="@dimen/sp_14" />
         </LinearLayout>
 
@@ -168,7 +175,7 @@
             android:id="@+id/layoutOption"
             android:layout_width="0dp"
             android:layout_height="@dimen/dp_64"
-            android:layout_marginBottom="@dimen/dp_32"
+            android:layout_marginBottom="@dimen/dp_8"
             android:background="@drawable/fragment_background_color"
             android:gravity="center"
             android:orientation="horizontal"
