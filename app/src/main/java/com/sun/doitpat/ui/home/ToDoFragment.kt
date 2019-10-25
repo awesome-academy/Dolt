@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sun.doitpat.BR
 import com.sun.doitpat.R
@@ -45,6 +46,7 @@ class ToDoFragment : BaseFragment<FragmentMainBinding, ToDoViewModel>() {
         toDoViewModel.list.observe(viewLifecycleOwner, Observer {
             toDoAdapter.submitList(it)
         })
+        setEventsClick()
     }
 
     private fun createViewModel() {
@@ -52,6 +54,12 @@ class ToDoFragment : BaseFragment<FragmentMainBinding, ToDoViewModel>() {
             toDoViewModel = ViewModelProviders.of(
                     this,
                     ViewModelFactory { ToDoViewModel(it) }).get(ToDoViewModel::class.java)
+        }
+    }
+
+    private fun setEventsClick() {
+        cardAddItem.setOnClickListener {
+            Navigation.findNavController(it).navigate(R.id.detailFragment)
         }
     }
 }

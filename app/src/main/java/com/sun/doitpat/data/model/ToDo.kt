@@ -13,16 +13,16 @@ data class ToDo(
     var id: Int = 0,
 
     @ColumnInfo(name = "title")
-    var title: String,
+    val title: String,
 
     @ColumnInfo(name = "description")
-    var description: String,
+    val description: String,
 
     @ColumnInfo(name = "time")
-    var time: String,
+    val time: String,
 
     @ColumnInfo(name = "place")
-    var place: String,
+    val place: String,
 
     @ColumnInfo(name = "color")
     var color: Int = Color.WHITE,

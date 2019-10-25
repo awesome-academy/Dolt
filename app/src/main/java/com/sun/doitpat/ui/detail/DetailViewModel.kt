@@ -6,7 +6,9 @@ import androidx.lifecycle.viewModelScope
 import com.sun.doitpat.base.BaseViewModel
 import com.sun.doitpat.data.model.ToDo
 import com.sun.doitpat.data.repository.ToDoRepository
+import com.sun.doitpat.util.TimeUtils
 import kotlinx.coroutines.launch
+import java.util.*
 
 class DetailViewModel(private val toDoRepository: ToDoRepository) : BaseViewModel() {
 
@@ -14,7 +16,7 @@ class DetailViewModel(private val toDoRepository: ToDoRepository) : BaseViewMode
 
     var title = item.value?.title
     var description = item.value?.description
-    var time = item.value?.time
+    var time = MutableLiveData<String>(item.value?.time)
     var place = item.value?.place
     var color = item.value?.color
     var inputColor = Color.WHITE
@@ -32,8 +34,8 @@ class DetailViewModel(private val toDoRepository: ToDoRepository) : BaseViewMode
         }
     }
 
-    fun addTime(time: String) {
-        this.time = time
+    fun addTime(calendar: Calendar) {
+        this.time.value = TimeUtils.timeToString(calendar)
     }
 
     fun add() = viewModelScope.launch {
