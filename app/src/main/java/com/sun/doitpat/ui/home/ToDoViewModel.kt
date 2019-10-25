@@ -13,7 +13,7 @@ class ToDoViewModel(private val toDoRepository: ToDoRepository) : BaseViewModel(
 
     init {
         viewModelScope.launch {
-            list.value = toDoRepository.getAllToDo()
+            list.value = toDoRepository.getAllToDo().asReversed()
         }
     }
 
