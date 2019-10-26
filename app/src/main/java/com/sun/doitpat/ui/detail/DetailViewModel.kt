@@ -6,6 +6,8 @@ import androidx.lifecycle.viewModelScope
 import com.sun.doitpat.base.BaseViewModel
 import com.sun.doitpat.data.model.ToDo
 import com.sun.doitpat.data.repository.ToDoRepository
+import com.sun.doitpat.util.Constants.DEFAULT_ID
+import com.sun.doitpat.util.Constants.EMPTY_STRING
 import com.sun.doitpat.util.TimeUtils
 import kotlinx.coroutines.launch
 import java.util.*
@@ -14,15 +16,14 @@ class DetailViewModel(private val toDoRepository: ToDoRepository) : BaseViewMode
 
     private val item = MutableLiveData<ToDo>()
 
-    var title = item.value?.title
-    var description = item.value?.description
-    var time = MutableLiveData<String>(item.value?.time)
-    var place = item.value?.place
-    var color = item.value?.color
-    var inputColor = Color.WHITE
+    var title = MutableLiveData<String>(EMPTY_STRING)
+    var description = MutableLiveData<String>(EMPTY_STRING)
+    var time = MutableLiveData<String>(EMPTY_STRING)
+    var place = MutableLiveData<String>(EMPTY_STRING)
+    var color = MutableLiveData<Int>(Color.WHITE)
 
     fun addColor(color: Int) {
-        inputColor = when (color) {
+        this.color.value = when (color) {
             1 -> COLOR_RED
             2 -> COLOR_ORANGE
             3 -> COLOR_YELLOW
@@ -38,14 +39,33 @@ class DetailViewModel(private val toDoRepository: ToDoRepository) : BaseViewMode
         this.time.value = TimeUtils.timeToString(calendar)
     }
 
-    fun add() = viewModelScope.launch {
+    fun addToDo() = viewModelScope.launch {
         val toDo = item.value?.copy(
-                title = title.toString(),
-                description = description.toString(),
-                time = time.toString(),
-                place = place.toString(),
-                color = inputColor)
+                title = title.value.toString(),
+                description = description.value.toString(),
+                time = time.value.toString(),
+                place = place.value.toString(),
+                color = color.value.toString().toInt())
         toDo?.let { toDoRepository.insertToDo(it) }
+    }
+
+    fun getToDo(id: Int) {
+        if (id != DEFAULT_ID) {
+            viewModelScope.launch {
+                item.value = toDoRepository.getToDoById(id)
+                setData()
+            }
+        }
+    }
+
+    private fun setData() {
+        item.value?.let {
+            title.value = it.title
+            description.value = it.description
+            time.value = it.time
+            place.value = it.place
+            color.value = it.color
+        }
     }
 
     companion object {
