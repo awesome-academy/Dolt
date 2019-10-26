@@ -4,19 +4,22 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.Navigation
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.tabs.TabLayout
 import com.sun.doitpat.BR
 import com.sun.doitpat.R
 import com.sun.doitpat.base.BaseFragment
 import com.sun.doitpat.base.ViewModelFactory
+import com.sun.doitpat.data.model.ToDo
 import com.sun.doitpat.data.repository.ToDoRepository
 import com.sun.doitpat.data.repository.impl.ToDoRepositoryImpl
 import com.sun.doitpat.data.source.local.AppDatabase
 import com.sun.doitpat.databinding.FragmentMainBinding
+import com.sun.doitpat.util.Constants.DEFAULT_ID
 import kotlinx.android.synthetic.main.fragment_main.*
 
-class ToDoFragment : BaseFragment<FragmentMainBinding, ToDoViewModel>() {
+class ToDoFragment : BaseFragment<FragmentMainBinding, ToDoViewModel>(), ToDoSwipeAdapter.OnSwipeItem {
 
     override val layoutId: Int
         get() = R.layout.fragment_main
@@ -30,7 +33,7 @@ class ToDoFragment : BaseFragment<FragmentMainBinding, ToDoViewModel>() {
     }
 
     private lateinit var toDoViewModel: ToDoViewModel
-    private val toDoAdapter by lazy { ToDoAdapter() }
+    private val swipeAdapter by lazy { ToDoSwipeAdapter(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,14 +42,40 @@ class ToDoFragment : BaseFragment<FragmentMainBinding, ToDoViewModel>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         recyclerView.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = toDoAdapter
+            adapter = swipeAdapter
         }
-        toDoViewModel.list.observe(viewLifecycleOwner, Observer {
-            toDoAdapter.submitList(it)
+
+        viewModel.list.observe(viewLifecycleOwner, Observer {
+            swipeAdapter.submitList(it)
         })
         setEventsClick()
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.getNewToDo()
+    }
+
+    override fun onClickComplete(item: ToDo) {
+        viewModel.updateItem(item)
+    }
+
+    override fun onClickDelete(item: ToDo) {
+        viewModel.deleteItem(item)
+    }
+
+    override fun onClickUndo(item: ToDo) {
+        viewModel.undoItem(item)
+    }
+
+    override fun onClickDetail(item: ToDo) {
+        val bundle = Bundle()
+        bundle.putInt(resources.getString(R.string.title_title), item.id)
+        view?.findNavController()?.navigate(R.id.detailFragment, bundle)
     }
 
     private fun createViewModel() {
@@ -58,8 +87,42 @@ class ToDoFragment : BaseFragment<FragmentMainBinding, ToDoViewModel>() {
     }
 
     private fun setEventsClick() {
-        cardAddItem.setOnClickListener {
-            Navigation.findNavController(it).navigate(R.id.detailFragment)
+
+        cardAddItem?.setOnClickListener {
+            val bundle = Bundle()
+            bundle.putInt(resources.getString(R.string.title_title), DEFAULT_ID)
+            view?.findNavController()?.navigate(R.id.detailFragment, bundle)
         }
+
+        tabLayout?.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                when (tab?.position) {
+                    NEW_TAB -> getNewToDo()
+                    COMPLETED_TAB -> getCompletedToDo()
+                }
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+                TODO()
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+                TODO()
+            }
+        })
+    }
+
+    private fun getNewToDo() {
+        viewModel.getNewToDo()
+    }
+
+    private fun getCompletedToDo() {
+        viewModel.getCompletedToDo()
+    }
+
+    companion object {
+        private const val NEW_TAB = 0
+        private const val COMPLETED_TAB = 2
     }
 }

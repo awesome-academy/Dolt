@@ -5,6 +5,7 @@ import androidx.databinding.BaseObservable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.sun.doitpat.util.Constants.EMPTY_STRING
 
 @Entity
 data class ToDo(
@@ -16,13 +17,13 @@ data class ToDo(
     val title: String,
 
     @ColumnInfo(name = "description")
-    val description: String,
+    var description: String = EMPTY_STRING,
 
     @ColumnInfo(name = "time")
-    val time: String,
+    var time: String = EMPTY_STRING,
 
     @ColumnInfo(name = "place")
-    val place: String,
+    var place: String = EMPTY_STRING,
 
     @ColumnInfo(name = "color")
     var color: Int = Color.WHITE,

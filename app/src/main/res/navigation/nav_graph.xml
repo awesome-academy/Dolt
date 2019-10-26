@@ -18,6 +18,11 @@
     <fragment
         android:id="@+id/detailFragment"
         android:name="com.sun.doitpat.ui.detail.DetailFragment"
-        android:label="DetailFragment" />
+        android:label="DetailFragment">
+        <argument
+            android:name="@string/title_title"
+            android:defaultValue="-1"
+            app:argType="integer" />
+    </fragment>
 
 </navigation>

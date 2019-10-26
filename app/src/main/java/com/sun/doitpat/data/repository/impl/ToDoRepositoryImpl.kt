@@ -6,6 +6,10 @@ import com.sun.doitpat.data.repository.ToDoRepository
 
 class ToDoRepositoryImpl(private val toDoDao: ToDoDao) : ToDoRepository {
 
+    override suspend fun getNewToDo() = toDoDao.getNewToDo()
+
+    override suspend fun getCompletedToDo() = toDoDao.getCompletedToDo()
+
     override suspend fun getAllToDo() = toDoDao.getAll()
 
     override suspend fun insertToDo(toDo: ToDo) = toDoDao.insert(toDo)
@@ -13,5 +17,7 @@ class ToDoRepositoryImpl(private val toDoDao: ToDoDao) : ToDoRepository {
     override suspend fun updateToDo(toDo: ToDo) = toDoDao.update(toDo)
 
     override suspend fun deleteToDo(toDo: ToDo) = toDoDao.delete(toDo)
+
+    override suspend fun getToDoById(id: Int) = toDoDao.getToDoById(id)
 
 }

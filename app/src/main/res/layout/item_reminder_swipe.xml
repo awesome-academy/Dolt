@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="todo"
+            type="com.sun.doitpat.data.model.ToDo" />
+    </data>
+
+    <com.daimajia.swipe.SwipeLayout
+        android:id="@+id/layoutSwipe"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_8">
+
+        <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/layoutDelete"
+            android:layout_width="@dimen/dp_120"
+            android:layout_height="@dimen/dp_84"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/buttonDelete"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/dp_8"
+                android:background="@drawable/button_red_background"
+                android:gravity="center"
+                android:text="@string/title_delete"
+                android:textColor="@color/color_white"
+                android:textSize="@dimen/sp_16"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutComplete"
+            android:layout_width="@dimen/dp_120"
+            android:layout_height="@dimen/dp_84"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/buttonComplete"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/dp_8"
+                android:background="@drawable/button_green_background"
+                android:gravity="center"
+                android:text="@string/title_complete"
+                android:textColor="@color/color_white"
+                android:textSize="@dimen/sp_16" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutUndo"
+            android:layout_width="@dimen/dp_120"
+            android:layout_height="@dimen/dp_84"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/buttonUndo"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/dp_8"
+                android:background="@drawable/fragment_background_color"
+                android:gravity="center"
+                android:text="@string/title_undo"
+                android:textColor="@color/color_white"
+                android:textSize="@dimen/sp_16" />
+
+        </LinearLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layoutSurface"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_84"
+            android:background="@drawable/fragment_background">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/viewColor"
+                android:layout_width="@dimen/dp_32"
+                android:layout_height="@dimen/dp_32"
+                android:layout_marginStart="@dimen/dp_16"
+                app:cardBackgroundColor="@{todo.color}"
+                app:cardCornerRadius="@dimen/dp_24"
+                app:cardElevation="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_24"
+                android:layout_marginTop="@dimen/dp_16"
+                android:gravity="center_vertical"
+                android:text="@{todo.title}"
+                android:textColor="@color/color_text"
+                android:textSize="@dimen/sp_16"
+                app:layout_constraintStart_toEndOf="@+id/viewColor"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_24"
+                android:layout_marginBottom="@dimen/dp_16"
+                android:gravity="center_vertical"
+                android:text="@{todo.time}"
+                android:textSize="@dimen/sp_12"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/viewColor" />
+
+            <View
+                android:id="@+id/viewSetAlarm"
+                android:layout_width="@dimen/dp_32"
+                android:layout_height="@dimen/dp_32"
+                android:layout_marginEnd="@dimen/dp_16"
+                android:background="@drawable/ic_alarm_on_black_24dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_2"
+                android:layout_marginEnd="@dimen/dp_16"
+                android:layout_marginBottom="@dimen/dp_16"
+                android:gravity="center_vertical"
+                android:text="@string/title_information_separate"
+                android:textSize="@dimen/sp_12"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textTime" />
+
+            <TextView
+                android:id="@+id/textPlace"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_4"
+                android:layout_marginEnd="@dimen/dp_16"
+                android:layout_marginBottom="@dimen/dp_16"
+                android:gravity="center_vertical"
+                android:text="@{todo.place}"
+                android:textSize="@dimen/sp_12"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textTime" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.daimajia.swipe.SwipeLayout>
+
+</layout>

@@ -14,6 +14,7 @@ import com.sun.doitpat.data.repository.ToDoRepository
 import com.sun.doitpat.data.repository.impl.ToDoRepositoryImpl
 import com.sun.doitpat.data.source.local.AppDatabase
 import com.sun.doitpat.databinding.FragmentDetailBinding
+import com.sun.doitpat.util.Constants.DEFAULT_ID
 import kotlinx.android.synthetic.main.fragment_detail.*
 import java.util.*
 
@@ -31,10 +32,13 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailViewModel>() {
     }
 
     private lateinit var detailViewModel: DetailViewModel
+    private var itemId: Int = DEFAULT_ID
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         createViewModel()
+        arguments?.let { itemId = it.getInt(resources.getString(R.string.title_title)) }
+        viewModel.getToDo(itemId)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -64,7 +68,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailViewModel>() {
                     val pickedTime = Calendar.getInstance()
                     pickedTime.set(year, month, dayOfMonth, hourOfDay, minute)
                     viewModel.addTime(pickedTime)
-                }, startHour, startMinute, false).show()
+                }, startHour, startMinute, true).show()
             }, startYear, startMonth, startDay).show()
         }
     }
@@ -74,7 +78,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailViewModel>() {
             showTimeChooserDialog()
         }
         buttonSave.setOnClickListener {
-            viewModel.add()
+            viewModel.addToDo()
             Navigation.findNavController(it).popBackStack()
         }
         buttonCancel.setOnClickListener {
