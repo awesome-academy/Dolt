@@ -14,7 +14,8 @@ import java.util.*
 
 class DetailViewModel(private val toDoRepository: ToDoRepository) : BaseViewModel() {
 
-    private val item = MutableLiveData<ToDo>()
+    private val toDo = ToDo(title = EMPTY_STRING)
+    private val item = MutableLiveData(toDo)
 
     var title = MutableLiveData<String>(EMPTY_STRING)
     var description = MutableLiveData<String>(EMPTY_STRING)

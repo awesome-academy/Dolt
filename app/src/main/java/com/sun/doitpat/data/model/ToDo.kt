@@ -1,13 +1,16 @@
 package com.sun.doitpat.data.model
 
 import android.graphics.Color
+import android.os.Parcelable
 import androidx.databinding.BaseObservable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.sun.doitpat.util.Constants.EMPTY_STRING
+import kotlinx.android.parcel.Parcelize
 
 @Entity
+@Parcelize
 data class ToDo(
 
     @PrimaryKey(autoGenerate = true)
@@ -30,4 +33,4 @@ data class ToDo(
 
     @ColumnInfo(name = "status")
     var status: Int = 0
-) : BaseObservable()
+) : BaseObservable(), Parcelable
