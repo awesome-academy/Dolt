@@ -62,7 +62,7 @@ class ToDoFragment : BaseFragment<FragmentMainBinding, ToDoViewModel>(), ToDoSwi
 
     override fun onResume() {
         super.onResume()
-        viewModel.getNewToDo()
+        viewModel.getNoAlertToDo()
     }
 
     override fun onClickComplete(item: ToDo) {
@@ -103,7 +103,8 @@ class ToDoFragment : BaseFragment<FragmentMainBinding, ToDoViewModel>(), ToDoSwi
 
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 when (tab?.position) {
-                    NEW_TAB -> getNewToDo()
+                    NO_ALERT_TAB -> getNoAlertToDo()
+                    ALERT_TAB -> getAlertToDo()
                     COMPLETED_TAB -> getCompletedToDo()
                 }
             }
@@ -133,8 +134,12 @@ class ToDoFragment : BaseFragment<FragmentMainBinding, ToDoViewModel>(), ToDoSwi
 
     }
 
-    private fun getNewToDo() {
-        viewModel.getNewToDo()
+    private fun getNoAlertToDo() {
+        viewModel.getNoAlertToDo()
+    }
+
+    private fun getAlertToDo() {
+        viewModel.getAlertToDo()
     }
 
     private fun getCompletedToDo() {
@@ -142,7 +147,8 @@ class ToDoFragment : BaseFragment<FragmentMainBinding, ToDoViewModel>(), ToDoSwi
     }
 
     companion object {
-        private const val NEW_TAB = 0
+        private const val NO_ALERT_TAB = 0
+        private const val ALERT_TAB = 1
         private const val COMPLETED_TAB = 2
         private const val WIDGET_UPDATE_ACTION = "android.appwidget.action.APPWIDGET_UPDATE"
     }

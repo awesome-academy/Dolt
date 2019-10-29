@@ -2,11 +2,14 @@ package com.sun.doitpat.ui.detail
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import com.sun.doitpat.BR
+import androidx.lifecycle.Observer
 import com.sun.doitpat.R
 import com.sun.doitpat.base.BaseFragment
 import com.sun.doitpat.base.ViewModelFactory
@@ -14,7 +17,17 @@ import com.sun.doitpat.data.repository.ToDoRepository
 import com.sun.doitpat.data.repository.impl.ToDoRepositoryImpl
 import com.sun.doitpat.data.source.local.AppDatabase
 import com.sun.doitpat.databinding.FragmentDetailBinding
+import com.sun.doitpat.util.Constants.ALERT
+import com.sun.doitpat.util.Constants.COLOR_BLUE
+import com.sun.doitpat.util.Constants.COLOR_GREEN
+import com.sun.doitpat.util.Constants.COLOR_ORANGE
+import com.sun.doitpat.util.Constants.COLOR_PURPLE
+import com.sun.doitpat.util.Constants.COLOR_RED
+import com.sun.doitpat.util.Constants.COLOR_YELLOW
 import com.sun.doitpat.util.Constants.DEFAULT_ID
+import com.sun.doitpat.util.Constants.EMPTY_STRING
+import com.sun.doitpat.util.Constants.NO_ALERT
+import com.sun.doitpat.util.Constants.NO_COLOR
 import kotlinx.android.synthetic.main.fragment_detail.*
 import java.util.*
 
@@ -43,6 +56,15 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailViewModel>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.color.observe(viewLifecycleOwner, Observer {
+            changeItemsColor(it)
+        })
+        viewModel.alertStatus.observe(viewLifecycleOwner, Observer {
+            setSwitchStatus(it)
+        })
+        viewModel.time.observe(viewLifecycleOwner, Observer {
+            if (it != EMPTY_STRING) showSwitch() else hideSwitch()
+        })
         setEventsClick()
     }
 
@@ -77,6 +99,13 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailViewModel>() {
         textSetTime.setOnClickListener {
             showTimeChooserDialog()
         }
+        textClearTime.setOnClickListener {
+            viewModel.clearTime()
+        }
+        switchReminder.setOnClickListener {
+            if (switchReminder.isChecked) viewModel.setReminder(ALERT)
+            else viewModel.setReminder(NO_ALERT)
+        }
         buttonSave.setOnClickListener {
             viewModel.addToDo()
             Navigation.findNavController(it).popBackStack()
@@ -84,6 +113,39 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailViewModel>() {
         buttonCancel.setOnClickListener {
             Navigation.findNavController(it).popBackStack()
         }
+    }
+
+    private fun changeItemsColor(color: Int) {
+        context?.let { context ->
+            val background = when (color) {
+                COLOR_RED -> ContextCompat.getDrawable(context, R.drawable.fragment_background_red)
+                COLOR_ORANGE -> ContextCompat.getDrawable(context, R.drawable.fragment_background_orange)
+                COLOR_YELLOW -> ContextCompat.getDrawable(context, R.drawable.fragment_background_yellow)
+                COLOR_GREEN -> ContextCompat.getDrawable(context, R.drawable.fragment_background_green)
+                COLOR_BLUE -> ContextCompat.getDrawable(context, R.drawable.fragment_background_blue)
+                COLOR_PURPLE -> ContextCompat.getDrawable(context, R.drawable.fragment_background_purple)
+                NO_COLOR -> ContextCompat.getDrawable(context, R.drawable.fragment_background_gray)
+                else -> ContextCompat.getDrawable(context, R.drawable.fragment_background_gray)
+            }
+            background?.let { changeColorBackground(it) }
+        }
+    }
+
+    private fun changeColorBackground(background: Drawable) {
+        layoutButton.background = background
+        layoutOption.background = background
+    }
+
+    private fun setSwitchStatus(alertStatus: Int) {
+        switchReminder.isChecked = alertStatus != NO_ALERT
+    }
+
+    private fun showSwitch() {
+        switchReminder.visibility = View.VISIBLE
+    }
+
+    private fun hideSwitch() {
+        switchReminder.visibility = View.GONE
     }
 
 }

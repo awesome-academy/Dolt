@@ -10,11 +10,20 @@ import com.sun.doitpat.base.BaseViewModel
 import com.sun.doitpat.data.model.ToDo
 import com.sun.doitpat.data.repository.ToDoRepository
 import com.sun.doitpat.notification.NotificationWorker
+import com.sun.doitpat.util.Constants.ALERT
 import com.sun.doitpat.util.Constants.DEFAULT_ID
 import com.sun.doitpat.util.Constants.EMPTY_STRING
 import com.sun.doitpat.util.Constants.ID
 import com.sun.doitpat.util.Constants.PLACE
 import com.sun.doitpat.util.Constants.TITLE
+import com.sun.doitpat.util.Constants.COLOR_BLUE
+import com.sun.doitpat.util.Constants.COLOR_GREEN
+import com.sun.doitpat.util.Constants.COLOR_ORANGE
+import com.sun.doitpat.util.Constants.COLOR_PURPLE
+import com.sun.doitpat.util.Constants.COLOR_RED
+import com.sun.doitpat.util.Constants.COLOR_YELLOW
+import com.sun.doitpat.util.Constants.DEFAULT_COLOR
+import com.sun.doitpat.util.Constants.NO_ALERT
 import com.sun.doitpat.util.TimeUtils
 import kotlinx.coroutines.launch
 import java.util.*
@@ -30,6 +39,7 @@ class DetailViewModel(private val toDoRepository: ToDoRepository) : BaseViewMode
     var time = MutableLiveData<String>(EMPTY_STRING)
     var place = MutableLiveData<String>(EMPTY_STRING)
     var color = MutableLiveData<Int>(Color.WHITE)
+    var alertStatus = MutableLiveData(0)
 
     private var reminderTime: Long = 0
     private var editStatus = ADD_MODE
@@ -59,10 +69,20 @@ class DetailViewModel(private val toDoRepository: ToDoRepository) : BaseViewMode
                     description = description.value.toString(),
                     time = time.value.toString(),
                     place = place.value.toString(),
+                    alertStatus = alertStatus.value.toString().toInt(),
                     color = color.value.toString().toInt())
             toDo?.let { toDoRepository.insertToDo(it) }
         }
-        setAlarm()
+        if (alertStatus.value == ALERT) setAlarm()
+    }
+
+    fun clearTime() {
+        this.time.value = EMPTY_STRING
+        setReminder(NO_ALERT)
+    }
+
+    fun setReminder(alertStatus: Int) {
+        this.alertStatus.value = alertStatus
     }
 
     fun getToDo(id: Int) {
@@ -82,6 +102,7 @@ class DetailViewModel(private val toDoRepository: ToDoRepository) : BaseViewMode
             time.value = it.time
             place.value = it.place
             color.value = it.color
+            alertStatus.value = it.alertStatus
         }
     }
 
@@ -113,13 +134,6 @@ class DetailViewModel(private val toDoRepository: ToDoRepository) : BaseViewMode
     }
 
     companion object {
-        private const val COLOR_RED = -1876663
-        private const val COLOR_ORANGE = -223690
-        private const val COLOR_YELLOW = -16121
-        private const val COLOR_GREEN = -6894049
-        private const val COLOR_BLUE = -12803585
-        private const val COLOR_PURPLE = -10791470
-        private const val DEFAULT_COLOR = -2697514
         private const val EDIT_MODE = 1
         private const val ADD_MODE = 0
     }

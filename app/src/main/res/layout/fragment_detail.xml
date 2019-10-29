@@ -130,19 +130,29 @@
                 android:orientation="horizontal">
 
                 <LinearLayout
+                    android:id="@+id/layoutButton"
                     android:layout_width="@dimen/dp_120"
                     android:layout_height="@dimen/dp_48"
                     android:layout_margin="@dimen/dp_32"
-                    android:background="@drawable/fragment_background_color_border"
+                    android:background="@drawable/fragment_background_purple"
                     android:gravity="center"
-                    android:orientation="vertical">
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textClearTime"
+                        android:layout_width="@dimen/dp_24"
+                        android:layout_height="@dimen/dp_24"
+                        android:layout_gravity="center"
+                        android:foreground="@drawable/ic_alarm_off_white_24dp"
+                        android:gravity="center" />
 
                     <TextView
                         android:id="@+id/textSetTime"
                         android:layout_width="@dimen/dp_24"
                         android:layout_height="@dimen/dp_24"
                         android:layout_gravity="center"
-                        android:foreground="@drawable/ic_add_alarm_purple_24dp"
+                        android:layout_marginStart="@dimen/dp_24"
+                        android:foreground="@drawable/ic_add_alarm_white_24dp"
                         android:gravity="center" />
                 </LinearLayout>
 
@@ -165,10 +175,21 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dp_32"
                 android:layout_marginTop="0dp"
-                android:layout_marginBottom="@dimen/dp_32"
                 android:gravity="center"
                 android:text="@={item.time}"
                 android:textSize="@dimen/sp_14" />
+
+            <Switch
+                android:id="@+id/switchReminder"
+                android:layout_width="@dimen/dp_120"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_32"
+                android:layout_marginTop="@dimen/dp_32"
+                android:layout_marginBottom="@dimen/dp_32"
+                android:gravity="center"
+                android:text="@string/title_alert_option"
+                android:textColor="@color/color_sub_text"
+                android:textSize="@dimen/sp_16" />
         </LinearLayout>
 
         <LinearLayout
@@ -176,7 +197,7 @@
             android:layout_width="0dp"
             android:layout_height="@dimen/dp_64"
             android:layout_marginBottom="@dimen/dp_8"
-            android:background="@drawable/fragment_background_color"
+            android:background="@drawable/fragment_background_purple"
             android:gravity="center"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -193,9 +214,8 @@
             <Button
                 android:id="@+id/buttonCancel"
                 style="@style/Widget.AppCompat.Button.Borderless"
-                android:layout_width="@dimen/dp_64"
+                android:layout_width="wrap_content"
                 android:layout_height="@dimen/dp_48"
-                android:background="@color/color_accent"
                 android:text="@string/title_cancel"
                 android:textColor="@color/color_white" />
 
@@ -209,9 +229,8 @@
             <Button
                 android:id="@+id/buttonSave"
                 style="@style/Widget.AppCompat.Button.Borderless"
-                android:layout_width="@dimen/dp_64"
+                android:layout_width="wrap_content"
                 android:layout_height="@dimen/dp_48"
-                android:background="@color/color_accent"
                 android:text="@string/title_save"
                 android:textColor="@color/color_white" />
 

@@ -1,6 +1,5 @@
 package com.sun.doitpat.data.model
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.sun.doitpat.util.Constants.TODO_TABLE_NAME
 
@@ -10,8 +9,11 @@ interface ToDoDao {
     @Query("SELECT * FROM $TODO_TABLE_NAME")
     suspend fun getAll(): List<ToDo>
 
-    @Query("SELECT * FROM $TODO_TABLE_NAME WHERE status = $NEW")
-    suspend fun getNewToDo(): List<ToDo>
+    @Query("SELECT * FROM $TODO_TABLE_NAME WHERE alertStatus = 0")
+    suspend fun getNoAlertToDo(): List<ToDo>
+
+    @Query("SELECT * FROM $TODO_TABLE_NAME WHERE alertStatus = $ALERT")
+    suspend fun getAlertToDo(): List<ToDo>
 
     @Query("SELECT * FROM $TODO_TABLE_NAME WHERE status = $COMPLETED")
     suspend fun getCompletedToDo(): List<ToDo>
@@ -29,7 +31,7 @@ interface ToDoDao {
     suspend fun delete(toDo: ToDo)
 
     companion object {
-        private const val NEW = 0
         private const val COMPLETED = 1
+        private const val ALERT = 1
     }
 }

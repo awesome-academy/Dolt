@@ -70,7 +70,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="@dimen/dp_8"
-                android:background="@drawable/fragment_background_color"
+                android:background="@drawable/fragment_background_purple"
                 android:gravity="center"
                 android:text="@string/title_undo"
                 android:textColor="@color/color_white"
@@ -120,16 +120,6 @@
                 android:textSize="@dimen/sp_12"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/viewColor" />
-
-            <View
-                android:id="@+id/viewSetAlarm"
-                android:layout_width="@dimen/dp_32"
-                android:layout_height="@dimen/dp_32"
-                android:layout_marginEnd="@dimen/dp_16"
-                android:background="@drawable/ic_alarm_on_black_24dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:layout_width="wrap_content"

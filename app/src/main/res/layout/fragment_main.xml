@@ -69,16 +69,18 @@
             app:tabSelectedTextColor="@color/color_accent">
 
             <com.google.android.material.tabs.TabItem
-                android:id="@+id/tabNew"
+                android:id="@+id/tabNoAlert"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_64"
-                android:text="@string/title_new"
+                android:text="@string/title_no_alert"
                 android:textSize="@dimen/sp_18" />
 
             <com.google.android.material.tabs.TabItem
-                android:layout_width="@dimen/dp_8"
-                android:layout_height="match_parent"
-                android:text="@string/title_tab_indicator" />
+                android:id="@+id/tabAlert"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_64"
+                android:text="@string/title_alert"
+                android:textSize="@dimen/sp_18" />
 
             <com.google.android.material.tabs.TabItem
                 android:id="@+id/tabCompleted"
