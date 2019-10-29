@@ -14,7 +14,7 @@ class ToDoViewModel(private val toDoRepository: ToDoRepository) : BaseViewModel(
     val list = MutableLiveData<List<ToDo>>()
 
     init {
-        getNewToDo()
+        getNoAlertToDo()
     }
 
     fun deleteItem(toDo: ToDo) {
@@ -35,9 +35,15 @@ class ToDoViewModel(private val toDoRepository: ToDoRepository) : BaseViewModel(
         }
     }
 
-    fun getNewToDo() {
+    fun getNoAlertToDo() {
         viewModelScope.launch {
-            list.value = toDoRepository.getNewToDo().asReversed()
+            list.value = toDoRepository.getNoAlertToDo().asReversed()
+        }
+    }
+
+    fun getAlertToDo() {
+        viewModelScope.launch {
+            list.value = toDoRepository.getAlertToDo().asReversed()
         }
     }
 

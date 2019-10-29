@@ -32,5 +32,9 @@ data class ToDo(
     var color: Int = Color.WHITE,
 
     @ColumnInfo(name = "status")
-    var status: Int = 0
+    var status: Int = 0,
+
+    @ColumnInfo(name = "alertStatus")
+    var alertStatus: Int = 0
+
 ) : BaseObservable(), Parcelable

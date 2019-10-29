@@ -6,7 +6,9 @@ import com.sun.doitpat.data.repository.ToDoRepository
 
 class ToDoRepositoryImpl(private val toDoDao: ToDoDao) : ToDoRepository {
 
-    override suspend fun getNewToDo() = toDoDao.getNewToDo()
+    override suspend fun getNoAlertToDo() = toDoDao.getNoAlertToDo()
+
+    override suspend fun getAlertToDo() = toDoDao.getAlertToDo()
 
     override suspend fun getCompletedToDo() = toDoDao.getCompletedToDo()
 

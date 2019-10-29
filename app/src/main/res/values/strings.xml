@@ -9,8 +9,10 @@
     <string name="title_information_separate">, </string>
     <string name="title_delete">Delete</string>
     <string name="title_complete">Complete</string>
-    <string name="title_new">New</string>
+    <string name="title_no_alert">No Alert</string>
     <string name="title_completed">Completed</string>
     <string name="title_tab_indicator">|</string>
     <string name="title_undo">Undo</string>
+    <string name="title_alert">Alert</string>
+    <string name="title_alert_option">Remind Me</string>
 </resources>
