@@ -175,6 +175,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dp_32"
                 android:layout_marginTop="0dp"
+                android:layout_marginBottom="@dimen/dp_32"
                 android:gravity="center"
                 android:text="@={item.time}"
                 android:textSize="@dimen/sp_14" />
@@ -184,7 +185,6 @@
                 android:layout_width="@dimen/dp_120"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dp_32"
-                android:layout_marginTop="@dimen/dp_32"
                 android:layout_marginBottom="@dimen/dp_32"
                 android:gravity="center"
                 android:text="@string/title_alert_option"

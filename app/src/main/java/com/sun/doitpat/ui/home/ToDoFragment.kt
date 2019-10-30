@@ -19,8 +19,10 @@ import com.sun.doitpat.data.repository.ToDoRepository
 import com.sun.doitpat.data.repository.impl.ToDoRepositoryImpl
 import com.sun.doitpat.data.source.local.AppDatabase
 import com.sun.doitpat.databinding.FragmentMainBinding
+import com.sun.doitpat.util.Constants.BUNDLE_EXTRA
 import com.sun.doitpat.util.Constants.DEFAULT_ID
-import com.sun.doitpat.util.Constants.WIDGET_BROADCAST
+import com.sun.doitpat.util.Constants.ID
+import com.sun.doitpat.util.Constants.ITEMS_EXTRA
 import com.sun.doitpat.widget.ToDoWidgetProvider
 import kotlinx.android.synthetic.main.fragment_main.*
 
@@ -54,6 +56,9 @@ class ToDoFragment : BaseFragment<FragmentMainBinding, ToDoViewModel>(), ToDoSwi
         }
         viewModel.list.observe(viewLifecycleOwner, Observer {
             swipeAdapter.submitList(it)
+
+        })
+        viewModel.widgetList.observe(viewLifecycleOwner, Observer {
             broadcastToWidget(ArrayList(it))
         })
         setEventsClick()
@@ -63,6 +68,7 @@ class ToDoFragment : BaseFragment<FragmentMainBinding, ToDoViewModel>(), ToDoSwi
     override fun onResume() {
         super.onResume()
         viewModel.getNoAlertToDo()
+
     }
 
     override fun onClickComplete(item: ToDo) {
@@ -120,18 +126,17 @@ class ToDoFragment : BaseFragment<FragmentMainBinding, ToDoViewModel>(), ToDoSwi
     }
 
     private fun broadcastToWidget(items: ArrayList<ToDo>?) {
-
-        val intent = Intent(context, ToDoWidgetProvider::class.java)
-        intent.action = WIDGET_UPDATE_ACTION
-
-        context?.applicationContext?.let {
-            val widgetIdArray = AppWidgetManager.getInstance(it)
-                    .getAppWidgetIds(ComponentName(it, ToDoWidgetProvider::class.java))
-            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, widgetIdArray)
-            intent.putParcelableArrayListExtra(WIDGET_BROADCAST, items)
+        context?.let {
+            val bundle = Bundle()
+            val ids = AppWidgetManager.getInstance(it).getAppWidgetIds(
+                    ComponentName(it, ToDoWidgetProvider::class.java))
+            bundle.putParcelableArrayList(ITEMS_EXTRA, items)
+            val intent = Intent(it, ToDoWidgetProvider::class.java)
+            intent.action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
+            intent.putExtra(BUNDLE_EXTRA, bundle)
+            intent.putExtra(ID, ids)
             activity?.sendBroadcast(intent)
         }
-
     }
 
     private fun getNoAlertToDo() {
@@ -150,6 +155,5 @@ class ToDoFragment : BaseFragment<FragmentMainBinding, ToDoViewModel>(), ToDoSwi
         private const val NO_ALERT_TAB = 0
         private const val ALERT_TAB = 1
         private const val COMPLETED_TAB = 2
-        private const val WIDGET_UPDATE_ACTION = "android.appwidget.action.APPWIDGET_UPDATE"
     }
 }

@@ -6,18 +6,16 @@ import android.widget.RemoteViews
 import android.widget.RemoteViewsService
 import com.sun.doitpat.R
 import com.sun.doitpat.data.model.ToDo
-import com.sun.doitpat.util.Constants.WIDGET_BROADCAST
-import com.sun.doitpat.util.Constants.WIDGET_DATA_BROADCAST
+import com.sun.doitpat.util.Constants.BUNDLE_EXTRA
+import com.sun.doitpat.util.Constants.EMPTY_SPACE
+import com.sun.doitpat.util.Constants.EXTRA
+import com.sun.doitpat.util.Constants.ITEMS_EXTRA
 
 class WidgetRemoteViewFactory(
         private val context: Context,
         private val intent: Intent) : RemoteViewsService.RemoteViewsFactory {
 
     private var items: ArrayList<ToDo>? = arrayListOf()
-
-    init {
-        items = intent.getBundleExtra(WIDGET_BROADCAST).getParcelableArrayList(WIDGET_DATA_BROADCAST)
-    }
 
     override fun onCreate() {
         updateList()
@@ -34,9 +32,9 @@ class WidgetRemoteViewFactory(
                 items?.get(position)?.title)
         remoteView.setTextViewText(
                 R.id.textWidgetItemInformation,
-                items?.get(position)?.time +
-                        context.resources.getString(R.string.title_information_separate) +
-                        items?.get(position)?.place)
+                items?.get(position)?.time + EMPTY_SPACE + items?.get(position)?.place)
+        val fillIntent = Intent().apply { putExtra(EXTRA, items?.get(position)?.id) }
+        remoteView.setOnClickFillInIntent(R.id.layoutWidgetItem, fillIntent)
         return remoteView
     }
 
@@ -60,7 +58,7 @@ class WidgetRemoteViewFactory(
     override fun getLoadingView() = RemoteViews(context.packageName, R.layout.to_do_widget)
 
     private fun updateList() {
-        items = intent.getBundleExtra(WIDGET_BROADCAST).getParcelableArrayList(WIDGET_DATA_BROADCAST)
+        items = intent.getBundleExtra(BUNDLE_EXTRA).getParcelableArrayList(ITEMS_EXTRA)
     }
 
     companion object {

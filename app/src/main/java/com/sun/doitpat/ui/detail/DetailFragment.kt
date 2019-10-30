@@ -24,10 +24,10 @@ import com.sun.doitpat.util.Constants.COLOR_ORANGE
 import com.sun.doitpat.util.Constants.COLOR_PURPLE
 import com.sun.doitpat.util.Constants.COLOR_RED
 import com.sun.doitpat.util.Constants.COLOR_YELLOW
+import com.sun.doitpat.util.Constants.DEFAULT_COLOR
 import com.sun.doitpat.util.Constants.DEFAULT_ID
 import com.sun.doitpat.util.Constants.EMPTY_STRING
 import com.sun.doitpat.util.Constants.NO_ALERT
-import com.sun.doitpat.util.Constants.NO_COLOR
 import kotlinx.android.synthetic.main.fragment_detail.*
 import java.util.*
 
@@ -52,6 +52,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailViewModel>() {
         createViewModel()
         arguments?.let { itemId = it.getInt(resources.getString(R.string.title_title)) }
         viewModel.getToDo(itemId)
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -63,7 +64,9 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailViewModel>() {
             setSwitchStatus(it)
         })
         viewModel.time.observe(viewLifecycleOwner, Observer {
-            if (it != EMPTY_STRING) showSwitch() else hideSwitch()
+            viewModel.reminderTime.value?.let { reminderTime ->
+                if (it != EMPTY_STRING && reminderTime >= 0) showSwitch() else hideSwitch()
+            }
         })
         setEventsClick()
     }
@@ -124,7 +127,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailViewModel>() {
                 COLOR_GREEN -> ContextCompat.getDrawable(context, R.drawable.fragment_background_green)
                 COLOR_BLUE -> ContextCompat.getDrawable(context, R.drawable.fragment_background_blue)
                 COLOR_PURPLE -> ContextCompat.getDrawable(context, R.drawable.fragment_background_purple)
-                NO_COLOR -> ContextCompat.getDrawable(context, R.drawable.fragment_background_gray)
+                DEFAULT_COLOR -> ContextCompat.getDrawable(context, R.drawable.fragment_background_gray)
                 else -> ContextCompat.getDrawable(context, R.drawable.fragment_background_gray)
             }
             background?.let { changeColorBackground(it) }
