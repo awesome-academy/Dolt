@@ -6,13 +6,16 @@ import com.sun.doitpat.util.Constants.TODO_TABLE_NAME
 @Dao
 interface ToDoDao {
 
-    @Query("SELECT * FROM $TODO_TABLE_NAME")
-    suspend fun getAll(): List<ToDo>
+    @Query("SELECT * FROM $TODO_TABLE_NAME WHERE status != $COMPLETED")
+    suspend fun getWidgetToDo(): List<ToDo>
 
-    @Query("SELECT * FROM $TODO_TABLE_NAME WHERE alertStatus = 0")
+    @Query("SELECT id FROM $TODO_TABLE_NAME WHERE id = (SELECT MAX(id) FROM $TODO_TABLE_NAME)")
+    suspend fun getNewToDoId(): Int
+
+    @Query("SELECT * FROM $TODO_TABLE_NAME WHERE alertStatus = 0 AND status != $COMPLETED")
     suspend fun getNoAlertToDo(): List<ToDo>
 
-    @Query("SELECT * FROM $TODO_TABLE_NAME WHERE alertStatus = $ALERT")
+    @Query("SELECT * FROM $TODO_TABLE_NAME WHERE alertStatus = $ALERT AND status != $COMPLETED")
     suspend fun getAlertToDo(): List<ToDo>
 
     @Query("SELECT * FROM $TODO_TABLE_NAME WHERE status = $COMPLETED")

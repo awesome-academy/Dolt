@@ -6,6 +6,7 @@ import androidx.databinding.BaseObservable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.sun.doitpat.util.Constants.DEFAULT_ID
 import com.sun.doitpat.util.Constants.EMPTY_STRING
 import kotlinx.android.parcel.Parcelize
 
@@ -14,7 +15,7 @@ import kotlinx.android.parcel.Parcelize
 data class ToDo(
 
     @PrimaryKey(autoGenerate = true)
-    var id: Int = 0,
+    var id: Int = DEFAULT_ID,
 
     @ColumnInfo(name = "title")
     val title: String,

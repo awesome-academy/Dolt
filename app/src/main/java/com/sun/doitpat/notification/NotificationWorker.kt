@@ -2,15 +2,19 @@ package com.sun.doitpat.notification
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
 import android.graphics.Color
 import android.media.RingtoneManager
 import android.os.Build
 import androidx.core.app.NotificationCompat
+import androidx.core.app.TaskStackBuilder
 import androidx.work.Worker
 import androidx.work.WorkerParameters
+import com.sun.doitpat.MainActivity
 import com.sun.doitpat.R
 import com.sun.doitpat.util.Constants.CHANNEL_ID
+import com.sun.doitpat.util.Constants.DEFAULT_ID
 import com.sun.doitpat.util.Constants.ID
 import com.sun.doitpat.util.Constants.PLACE
 import com.sun.doitpat.util.Constants.TITLE
@@ -32,6 +36,7 @@ class NotificationWorker(
                 .setSmallIcon(R.mipmap.ic_launcher_round)
                 .setContentTitle(inputData.getString(TITLE))
                 .setContentText(inputData.getString(PLACE))
+                .setContentIntent(getIntent(inputData.getInt(ID, DEFAULT_ID)))
                 .setAutoCancel(true)
                 .setChannelId(CHANNEL_ID)
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM))
@@ -39,6 +44,15 @@ class NotificationWorker(
                 .build()
         notificationManager.notify(inputData.getInt(ID, 0), notification)
         return Result.success()
+    }
+
+    private fun getIntent(itemId: Int): PendingIntent? {
+        val intent = MainActivity.getIntent(context, itemId)
+        val taskStackBuilder = TaskStackBuilder.create(context).apply {
+            addParentStack(MainActivity::class.java)
+            addNextIntent(intent)
+        }
+        return taskStackBuilder.getPendingIntent(itemId, PendingIntent.FLAG_UPDATE_CURRENT)
     }
 
     companion object {

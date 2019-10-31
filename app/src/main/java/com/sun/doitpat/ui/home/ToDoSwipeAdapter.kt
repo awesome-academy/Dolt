@@ -32,7 +32,6 @@ class ToDoSwipeAdapter(private val listener: OnSwipeItem) : RecyclerSwipeAdapter
     override fun onBindViewHolder(holder: SwipeBindingViewHolder<ToDo>, position: Int) {
 
         holder.bind(items[position])
-
         holder.itemView.apply {
 
             if (items[position].status == COMPLETED) {
@@ -41,7 +40,6 @@ class ToDoSwipeAdapter(private val listener: OnSwipeItem) : RecyclerSwipeAdapter
                     listener.onClickUndo(items[position])
                     holder.close()
                     removeItem(position)
-
                 }
             } else {
                 layoutSwipe.addDrag(SwipeLayout.DragEdge.Right, this.findViewById(R.id.layoutComplete))
@@ -50,7 +48,6 @@ class ToDoSwipeAdapter(private val listener: OnSwipeItem) : RecyclerSwipeAdapter
                     holder.close()
                     removeItem(position)
                 }
-
             }
 
             buttonDelete.setOnClickListener {
@@ -62,13 +59,13 @@ class ToDoSwipeAdapter(private val listener: OnSwipeItem) : RecyclerSwipeAdapter
             layoutSurface.setOnClickListener {
                 listener.onClickDetail(items[position])
             }
-
         }
     }
 
     private fun removeItem(position: Int) {
         items.remove(items[position])
         notifyItemRemoved(position)
+        notifyItemRangeChanged(position, items.size - position + OFF_SET)
     }
 
     fun submitList(items: List<ToDo>) {
@@ -81,5 +78,9 @@ class ToDoSwipeAdapter(private val listener: OnSwipeItem) : RecyclerSwipeAdapter
         fun onClickComplete(item: ToDo)
         fun onClickUndo(item: ToDo)
         fun onClickDetail(item: ToDo)
+    }
+
+    companion object {
+        private const val OFF_SET = 1
     }
 }

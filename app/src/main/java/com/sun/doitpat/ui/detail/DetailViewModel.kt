@@ -1,6 +1,5 @@
 package com.sun.doitpat.ui.detail
 
-import android.graphics.Color
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.work.Data
@@ -22,27 +21,73 @@ import com.sun.doitpat.util.Constants.COLOR_ORANGE
 import com.sun.doitpat.util.Constants.COLOR_PURPLE
 import com.sun.doitpat.util.Constants.COLOR_RED
 import com.sun.doitpat.util.Constants.COLOR_YELLOW
+import com.sun.doitpat.util.Constants.DEFAULT_CHECK_ID
 import com.sun.doitpat.util.Constants.DEFAULT_COLOR
 import com.sun.doitpat.util.Constants.NO_ALERT
 import com.sun.doitpat.util.TimeUtils
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.*
 import java.util.concurrent.TimeUnit
 
 class DetailViewModel(private val toDoRepository: ToDoRepository) : BaseViewModel() {
 
-    private val toDo = ToDo(title = EMPTY_STRING)
-    private val item = MutableLiveData(toDo)
+    private val item = MutableLiveData<ToDo>()
+    private var highestId = DEFAULT_ID
 
-    var title = MutableLiveData<String>(EMPTY_STRING)
-    var description = MutableLiveData<String>(EMPTY_STRING)
-    var time = MutableLiveData<String>(EMPTY_STRING)
-    var place = MutableLiveData<String>(EMPTY_STRING)
-    var color = MutableLiveData<Int>(Color.WHITE)
-    var alertStatus = MutableLiveData(0)
-
-    private var reminderTime: Long = 0
+    val title = MutableLiveData(EMPTY_STRING)
+    val description = MutableLiveData(EMPTY_STRING)
+    val time = MutableLiveData(EMPTY_STRING)
+    val place = MutableLiveData(EMPTY_STRING)
+    val color = MutableLiveData(DEFAULT_COLOR)
+    val alertStatus = MutableLiveData(0)
+    val reminderTime = MutableLiveData(0L)
     private var editStatus = ADD_MODE
+
+
+    private fun setData() {
+        item.value?.let {
+            title.value = it.title
+            description.value = it.description
+            time.value = it.time
+            place.value = it.place
+            color.value = it.color
+            alertStatus.value = it.alertStatus
+        }
+    }
+
+    private fun setNewData() =
+            viewModelScope.launch {
+                withContext(coroutineContext) { highestId = toDoRepository.getNewToDoId() }
+                withContext(coroutineContext) {
+                    item.value = ToDo(
+                            id = (highestId + INCREMENT),
+                            title = EMPTY_STRING
+                    )
+                }
+            }
+
+    private fun setAlarm(id: Int) {
+        if (editStatus == EDIT_MODE) {
+            WorkManager.getInstance().cancelAllWorkByTag(id.toString())
+        }
+        setNotification(id)
+    }
+
+    private fun setNotification(id: Int) {
+        val notificationData = Data.Builder()
+                .putInt(ID, id)
+                .putString(TITLE, title.value?.toString())
+                .putString(PLACE, place.value?.toString())
+                .build()
+        val oneTimeWorkerRequest = OneTimeWorkRequest.Builder(NotificationWorker::class.java)
+                .setInitialDelay(reminderTime.value.toString().toLong(),
+                        TimeUnit.MILLISECONDS)
+                .addTag(id.toString())
+                .setInputData(notificationData)
+                .build()
+        WorkManager.getInstance().enqueue(oneTimeWorkerRequest)
+    }
 
     fun addColor(color: Int) {
         this.color.value = when (color) {
@@ -59,7 +104,7 @@ class DetailViewModel(private val toDoRepository: ToDoRepository) : BaseViewMode
 
     fun addTime(calendar: Calendar) {
         this.time.value = TimeUtils.timeToString(calendar)
-        reminderTime = (calendar.timeInMillis - System.currentTimeMillis())
+        reminderTime.value = calendar.timeInMillis - System.currentTimeMillis()
     }
 
     fun addToDo() {
@@ -73,7 +118,11 @@ class DetailViewModel(private val toDoRepository: ToDoRepository) : BaseViewMode
                     color = color.value.toString().toInt())
             toDo?.let { toDoRepository.insertToDo(it) }
         }
-        if (alertStatus.value == ALERT) setAlarm()
+        item.value?.id?.let { createNotification(it) }
+    }
+
+    private fun createNotification(id: Int) {
+        reminderTime.value?.let { if (alertStatus.value == ALERT && it >= 0) setAlarm(id) }
     }
 
     fun clearTime() {
@@ -86,55 +135,21 @@ class DetailViewModel(private val toDoRepository: ToDoRepository) : BaseViewMode
     }
 
     fun getToDo(id: Int) {
-        if (id != DEFAULT_ID) {
+        if (id != DEFAULT_ID && id != DEFAULT_CHECK_ID) {
             viewModelScope.launch {
                 item.value = toDoRepository.getToDoById(id)
                 setData()
             }
-        }
-        editStatus = EDIT_MODE
-    }
-
-    private fun setData() {
-        item.value?.let {
-            title.value = it.title
-            description.value = it.description
-            time.value = it.time
-            place.value = it.place
-            color.value = it.color
-            alertStatus.value = it.alertStatus
-        }
-    }
-
-    private fun setAlarm() {
-        if (reminderTime > 0) {
-            item.value?.id?.let {
-                if (editStatus == EDIT_MODE) {
-                    WorkManager.getInstance().cancelAllWorkByTag(it.toString())
-                }
-                setNotification()
-            }
-        }
-    }
-
-    private fun setNotification() {
-        item.value?.id?.let {
-            val notificationData = Data.Builder()
-                    .putInt(ID, it)
-                    .putString(TITLE, title.value.toString())
-                    .putString(PLACE, place.value.toString())
-                    .build()
-            val oneTimeWorkerRequest = OneTimeWorkRequest.Builder(NotificationWorker::class.java)
-                    .setInitialDelay(reminderTime, TimeUnit.MILLISECONDS)
-                    .addTag(it.toString())
-                    .setInputData(notificationData)
-                    .build()
-            WorkManager.getInstance().enqueue(oneTimeWorkerRequest)
+            editStatus = EDIT_MODE
+        } else {
+            setNewData()
+            editStatus = ADD_MODE
         }
     }
 
     companion object {
         private const val EDIT_MODE = 1
         private const val ADD_MODE = 0
+        private const val INCREMENT = 1
     }
 }
