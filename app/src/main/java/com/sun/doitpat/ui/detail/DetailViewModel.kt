@@ -34,6 +34,7 @@ class DetailViewModel(private val toDoRepository: ToDoRepository) : BaseViewMode
 
     private val item = MutableLiveData<ToDo>()
     private var highestId = DEFAULT_ID
+    private var editStatus = ADD_MODE
 
     val title = MutableLiveData(EMPTY_STRING)
     val description = MutableLiveData(EMPTY_STRING)
@@ -42,8 +43,6 @@ class DetailViewModel(private val toDoRepository: ToDoRepository) : BaseViewMode
     val color = MutableLiveData(DEFAULT_COLOR)
     val alertStatus = MutableLiveData(0)
     val reminderTime = MutableLiveData(0L)
-    private var editStatus = ADD_MODE
-
 
     private fun setData() {
         item.value?.let {

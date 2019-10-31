@@ -1,7 +1,5 @@
 package com.sun.doitpat.ui.home
 
-import android.appwidget.AppWidgetManager
-import android.content.ComponentName
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -21,8 +19,8 @@ import com.sun.doitpat.data.source.local.AppDatabase
 import com.sun.doitpat.databinding.FragmentMainBinding
 import com.sun.doitpat.util.Constants.BUNDLE_EXTRA
 import com.sun.doitpat.util.Constants.DEFAULT_ID
-import com.sun.doitpat.util.Constants.ID
 import com.sun.doitpat.util.Constants.ITEMS_EXTRA
+import com.sun.doitpat.util.Constants.WIDGET_UPDATE_FROM_APP_ACTION
 import com.sun.doitpat.widget.ToDoWidgetProvider
 import kotlinx.android.synthetic.main.fragment_main.*
 
@@ -127,15 +125,7 @@ class ToDoFragment : BaseFragment<FragmentMainBinding, ToDoViewModel>(), ToDoSwi
 
     private fun broadcastToWidget(items: ArrayList<ToDo>?) {
         context?.let {
-            val bundle = Bundle()
-            val ids = AppWidgetManager.getInstance(it).getAppWidgetIds(
-                    ComponentName(it, ToDoWidgetProvider::class.java))
-            bundle.putParcelableArrayList(ITEMS_EXTRA, items)
-            val intent = Intent(it, ToDoWidgetProvider::class.java)
-            intent.action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
-            intent.putExtra(BUNDLE_EXTRA, bundle)
-            intent.putExtra(ID, ids)
-            activity?.sendBroadcast(intent)
+            items?.let { _items -> activity?.sendBroadcast(ToDoWidgetProvider.getIntent(it, _items)) }
         }
     }
 

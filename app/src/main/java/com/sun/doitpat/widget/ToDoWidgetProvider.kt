@@ -6,19 +6,20 @@ import android.appwidget.AppWidgetManager
 import com.sun.doitpat.R
 import android.appwidget.AppWidgetManager.getInstance
 import android.appwidget.AppWidgetProvider
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.widget.RemoteViews
 import com.sun.doitpat.MainActivity
+import com.sun.doitpat.data.model.ToDo
+import com.sun.doitpat.util.Constants
 import com.sun.doitpat.util.Constants.BUNDLE_EXTRA
 import com.sun.doitpat.util.Constants.DEFAULT_ID
-import com.sun.doitpat.util.Constants.ID
+import com.sun.doitpat.util.Constants.WIDGET_UPDATE_FROM_APP_ACTION
 
 class ToDoWidgetProvider : AppWidgetProvider() {
-
-    private var bundle: Bundle? = Bundle()
 
     override fun onUpdate(context: Context?, appWidgetManager: AppWidgetManager?, appWidgetIds: IntArray?) {
         context?.let { _context ->
@@ -27,18 +28,18 @@ class ToDoWidgetProvider : AppWidgetProvider() {
     }
 
     override fun onReceive(context: Context?, intent: Intent?) {
-        super.onReceive(context, intent)
-        bundle = intent?.getBundleExtra(BUNDLE_EXTRA)
+
+        if (intent?.action == WIDGET_UPDATE_FROM_APP_ACTION) {
+            WidgetListDataBackup.storeWidgetData(intent.getBundleExtra(BUNDLE_EXTRA))
+        }
         context?.let { _context ->
-            val appWidgetIds = intent?.getIntArrayExtra(ID)
-            appWidgetIds?.let { updateWidget(_context, it) }
+            val appWidgetIds = getInstance(_context).getAppWidgetIds(
+                    ComponentName(_context, this::class.java))
+            updateWidget(_context, appWidgetIds)
         }
     }
 
     private fun updateWidget(context: Context, appWidgetIds: IntArray) {
-        val intent = Intent(context, WidgetService::class.java)
-        intent.putExtra(BUNDLE_EXTRA, bundle)
-        intent.data = Uri.parse(System.currentTimeMillis().toString())
 
         val widgetRemoteView = RemoteViews(context.packageName, R.layout.to_do_widget)
         val openAppClickIntent = Intent(context, MainActivity::class.java)
@@ -51,7 +52,7 @@ class ToDoWidgetProvider : AppWidgetProvider() {
         widgetRemoteView.apply {
             setOnClickPendingIntent(R.id.buttonWidgetAdd, getIntent(context, DEFAULT_ID))
             setOnClickPendingIntent(R.id.textWidgetTitle, openAppPendingIntent)
-            setRemoteAdapter(R.id.listWidgetItems, intent)
+            setRemoteAdapter(R.id.listWidgetItems, WidgetService.getIntent(context))
             setPendingIntentTemplate(R.id.listWidgetItems, pendingIntent)
         }
 
@@ -68,6 +69,17 @@ class ToDoWidgetProvider : AppWidgetProvider() {
             addNextIntent(intent)
         }
         return taskStackBuilder.getPendingIntent(itemId, PendingIntent.FLAG_UPDATE_CURRENT)
+    }
+
+    companion object {
+        fun getIntent(context: Context, items: ArrayList<ToDo>) =
+                Intent(context, ToDoWidgetProvider::class.java).apply {
+                    action = WIDGET_UPDATE_FROM_APP_ACTION
+                    putExtra(BUNDLE_EXTRA, Bundle().apply {
+                        putParcelableArrayList(Constants.ITEMS_EXTRA, items)
+                    })
+                }
+
     }
 
 }
