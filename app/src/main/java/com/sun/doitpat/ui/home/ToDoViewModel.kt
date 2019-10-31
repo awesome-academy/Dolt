@@ -1,5 +1,6 @@
 package com.sun.doitpat.ui.home
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.work.WorkManager
@@ -12,8 +13,10 @@ import kotlinx.coroutines.launch
 
 class ToDoViewModel(private val toDoRepository: ToDoRepository) : BaseViewModel() {
 
-    val list = MutableLiveData<List<ToDo>>()
-    val widgetList = MutableLiveData<List<ToDo>>()
+    private val _list = MutableLiveData<List<ToDo>>()
+    private val _widgetList = MutableLiveData<List<ToDo>>()
+    val list: LiveData<List<ToDo>> get() = _list
+    val widgetList: LiveData<List<ToDo>> get() = _widgetList
 
     init {
         getNoAlertToDo()
@@ -26,14 +29,14 @@ class ToDoViewModel(private val toDoRepository: ToDoRepository) : BaseViewModel(
 
     private fun getWidgetList() {
         viewModelScope.launch {
-            widgetList.value = toDoRepository.getAllToDo().asReversed()
+            _widgetList.value = toDoRepository.getAllToDo().asReversed()
         }
     }
 
     fun deleteItem(toDo: ToDo) {
         viewModelScope.launch {
             toDoRepository.deleteToDo(toDo)
-            widgetList.value = toDoRepository.getAllToDo().asReversed()
+            _widgetList.value = toDoRepository.getAllToDo().asReversed()
         }
         cancelNotification(toDo.id.toString())
     }
@@ -41,7 +44,7 @@ class ToDoViewModel(private val toDoRepository: ToDoRepository) : BaseViewModel(
     fun updateItem(toDo: ToDo) {
         viewModelScope.launch {
             toDoRepository.updateToDo(toDo.copy(status = COMPLETED))
-            widgetList.value = toDoRepository.getAllToDo().asReversed()
+            _widgetList.value = toDoRepository.getAllToDo().asReversed()
         }
         cancelNotification(toDo.id.toString())
     }
@@ -49,26 +52,26 @@ class ToDoViewModel(private val toDoRepository: ToDoRepository) : BaseViewModel(
     fun undoItem(toDo: ToDo) {
         viewModelScope.launch {
             toDoRepository.updateToDo(toDo.copy(status = NEW))
-            widgetList.value = toDoRepository.getAllToDo().asReversed()
+            _widgetList.value = toDoRepository.getAllToDo().asReversed()
         }
     }
 
     fun getNoAlertToDo() {
         viewModelScope.launch {
-            list.value = toDoRepository.getNoAlertToDo().asReversed()
-            widgetList.value = toDoRepository.getAllToDo().asReversed()
+            _list.value = toDoRepository.getNoAlertToDo().asReversed()
+            _widgetList.value = toDoRepository.getAllToDo().asReversed()
         }
     }
 
     fun getAlertToDo() {
         viewModelScope.launch {
-            list.value = toDoRepository.getAlertToDo().asReversed()
+            _list.value = toDoRepository.getAlertToDo().asReversed()
         }
     }
 
     fun getCompletedToDo() {
         viewModelScope.launch {
-            list.value = toDoRepository.getCompletedToDo().asReversed()
+            _list.value = toDoRepository.getCompletedToDo().asReversed()
         }
     }
 

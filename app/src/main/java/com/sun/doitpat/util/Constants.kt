@@ -23,6 +23,6 @@ object Constants {
     const val NO_ALERT = 0
     const val ALERT = 1
     const val EXTRA = "extra"
-    const val ADD_EXTRA = "add"
     const val DEFAULT_CHECK_ID = -2
+    const val WIDGET_UPDATE_FROM_APP_ACTION = "Update from toDoFragment"
 }

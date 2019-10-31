@@ -21,4 +21,5 @@
     <dimen name="dp_180">180dp</dimen>
     <dimen name="sp_24">24sp</dimen>
     <dimen name="dp_110">110dp</dimen>
+    <dimen name="dp_12">12dp</dimen>
 </resources>
