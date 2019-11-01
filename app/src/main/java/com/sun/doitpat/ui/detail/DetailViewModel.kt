@@ -26,6 +26,7 @@ import com.sun.doitpat.util.Constants.DEFAULT_COLOR
 import com.sun.doitpat.util.Constants.NEW
 import com.sun.doitpat.util.Constants.NO_ALERT
 import com.sun.doitpat.util.TimeUtils
+import com.sun.doitpat.util.isLaterThanNow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.*
@@ -36,6 +37,7 @@ class DetailViewModel(private val toDoRepository: ToDoRepository) : BaseViewMode
     private val item = MutableLiveData<ToDo>()
     private var highestId = DEFAULT_ID
     private var editStatus = ADD_MODE
+    private val _reminderTime = MutableLiveData(0L)
 
     val title = MutableLiveData(EMPTY_STRING)
     val description = MutableLiveData(EMPTY_STRING)
@@ -43,8 +45,8 @@ class DetailViewModel(private val toDoRepository: ToDoRepository) : BaseViewMode
     val place = MutableLiveData(EMPTY_STRING)
     val color = MutableLiveData(DEFAULT_COLOR)
     val alertStatus = MutableLiveData(0)
-    val reminderTime = MutableLiveData(0L)
     val itemStatus = MutableLiveData(NEW)
+    val reminderTime get() = _reminderTime.value
 
     private fun setData() {
         item.value?.let {
@@ -55,39 +57,38 @@ class DetailViewModel(private val toDoRepository: ToDoRepository) : BaseViewMode
             color.value = it.color
             alertStatus.value = it.alertStatus
             itemStatus.value = it.status
+            _reminderTime.value = it.createdTimeMillisecond
+            if (editStatus == EDIT_MODE) WorkManager.getInstance().cancelAllWorkByTag(it.id.toString())
         }
     }
 
     private fun setNewData() =
-            viewModelScope.launch {
-                withContext(coroutineContext) { highestId = toDoRepository.getNewToDoId() }
-                withContext(coroutineContext) {
-                    item.value = ToDo(
-                            id = (highestId + INCREMENT),
-                            title = EMPTY_STRING
-                    )
-                }
+        viewModelScope.launch {
+            withContext(coroutineContext) { highestId = toDoRepository.getNewToDoId() ?: highestId }
+            withContext(coroutineContext) {
+                item.value = ToDo(
+                    id = (highestId + INCREMENT),
+                    title = EMPTY_STRING
+                )
             }
+        }
 
     private fun setAlarm(id: Int) {
-        if (editStatus == EDIT_MODE) {
-            WorkManager.getInstance().cancelAllWorkByTag(id.toString())
-        }
         setNotification(id)
     }
 
     private fun setNotification(id: Int) {
         val notificationData = Data.Builder()
-                .putInt(ID, id)
-                .putString(TITLE, title.value?.toString())
-                .putString(PLACE, place.value?.toString())
-                .build()
+            .putInt(ID, id)
+            .putString(TITLE, title.value?.toString())
+            .putString(PLACE, place.value?.toString())
+            .build()
         val oneTimeWorkerRequest = OneTimeWorkRequest.Builder(NotificationWorker::class.java)
-                .setInitialDelay(reminderTime.value.toString().toLong(),
-                        TimeUnit.MILLISECONDS)
-                .addTag(id.toString())
-                .setInputData(notificationData)
-                .build()
+            .setInitialDelay(_reminderTime.value.toString().toLong() - System.currentTimeMillis(),
+                TimeUnit.MILLISECONDS)
+            .addTag(id.toString())
+            .setInputData(notificationData)
+            .build()
         WorkManager.getInstance().enqueue(oneTimeWorkerRequest)
     }
 
@@ -105,27 +106,30 @@ class DetailViewModel(private val toDoRepository: ToDoRepository) : BaseViewMode
     }
 
     fun addTime(calendar: Calendar) {
-        this.time.value = TimeUtils.timeToString(calendar)
-        reminderTime.value = calendar.timeInMillis - System.currentTimeMillis()
+        time.value = TimeUtils.timeToString(calendar)
+        _reminderTime.value = calendar.timeInMillis
     }
 
     fun addToDo() {
         viewModelScope.launch {
             val toDo = item.value?.copy(
-                    title = title.value.toString(),
-                    description = description.value.toString(),
-                    time = time.value.toString(),
-                    place = place.value.toString(),
-                    alertStatus = alertStatus.value.toString().toInt(),
-                    color = color.value.toString().toInt(),
-                    status = itemStatus.value.toString().toInt())
+                title = title.value.toString(),
+                description = description.value.toString(),
+                time = time.value.toString(),
+                place = place.value.toString(),
+                alertStatus = alertStatus.value.toString().toInt(),
+                color = color.value.toString().toInt(),
+                status = itemStatus.value.toString().toInt(),
+                createdTimeMillisecond = _reminderTime.value)
             toDo?.let { toDoRepository.insertToDo(it) }
         }
         item.value?.id?.let { createNotification(it) }
     }
 
     private fun createNotification(id: Int) {
-        reminderTime.value?.let { if (alertStatus.value == ALERT && it >= 0) setAlarm(id) }
+        _reminderTime.value?.let {
+            if (alertStatus.value == ALERT && it.isLaterThanNow()) setAlarm(id)
+        }
     }
 
     fun clearTime() {
@@ -139,14 +143,14 @@ class DetailViewModel(private val toDoRepository: ToDoRepository) : BaseViewMode
 
     fun getToDo(id: Int) {
         if (id != DEFAULT_ID && id != DEFAULT_CHECK_ID) {
+            editStatus = EDIT_MODE
             viewModelScope.launch {
                 item.value = toDoRepository.getToDoById(id)
                 setData()
             }
-            editStatus = EDIT_MODE
         } else {
-            setNewData()
             editStatus = ADD_MODE
+            setNewData()
         }
     }
 

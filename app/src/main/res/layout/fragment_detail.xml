@@ -139,11 +139,12 @@
                 android:id="@+id/editDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/dp_32"
+                android:layout_marginStart="@dimen/dp_32"
+                android:layout_marginEnd="@dimen/dp_32"
                 android:autofillHints="@string/title_description"
                 android:ems="10"
                 android:hint="@string/title_description"
-                android:inputType="textPersonName"
+                android:inputType="textMultiLine"
                 android:text="@={item.description}"
                 android:textColor="@color/color_sub_text"
                 android:textSize="@dimen/sp_16"
@@ -152,7 +153,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_64"
+                android:layout_marginTop="@dimen/dp_24"
                 android:orientation="horizontal">
 
                 <androidx.cardview.widget.CardView
@@ -242,7 +243,7 @@
                 android:layout_width="@dimen/dp_120"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dp_32"
-                android:layout_marginBottom="@dimen/dp_32"
+                android:layout_marginBottom="@dimen/dp_16"
                 android:gravity="center"
                 android:text="@string/title_alert_option"
                 android:textSize="@dimen/sp_16"
@@ -258,6 +259,7 @@
             android:background="@drawable/fragment_background_purple"
             android:gravity="center"
             android:orientation="horizontal"
+            android:overScrollMode="ifContentScrolls"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"

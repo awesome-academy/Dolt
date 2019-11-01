@@ -11,6 +11,6 @@ interface ToDoRepository {
     suspend fun insertToDo(toDo: ToDo)
     suspend fun updateToDo(toDo: ToDo)
     suspend fun deleteToDo(toDo: ToDo)
-    suspend fun getToDoById(id: Int): ToDo
-    suspend fun getNewToDoId() : Int
+    suspend fun getToDoById(id: Int): ToDo?
+    suspend fun getNewToDoId() : Int?
 }

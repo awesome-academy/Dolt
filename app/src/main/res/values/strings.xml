@@ -17,4 +17,5 @@
     <string name="title_mark_completed">Mark as Completed</string>
     <string name="title_add_item_toolbar_title">Add Reminder</string>
     <string name="title_search_to_do">Search Reminder</string>
+    <string name="title_empty_list">No Items</string>
 </resources>

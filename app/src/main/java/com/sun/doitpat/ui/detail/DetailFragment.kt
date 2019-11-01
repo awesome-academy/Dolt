@@ -30,6 +30,7 @@ import com.sun.doitpat.util.Constants.DEFAULT_ID
 import com.sun.doitpat.util.Constants.EMPTY_STRING
 import com.sun.doitpat.util.Constants.NEW
 import com.sun.doitpat.util.Constants.NO_ALERT
+import com.sun.doitpat.util.isLaterThanNow
 import kotlinx.android.synthetic.main.fragment_detail.*
 import java.util.*
 
@@ -66,8 +67,9 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailViewModel>() {
             setSwitchStatus(it)
         })
         viewModel.time.observe(viewLifecycleOwner, Observer {
-            viewModel.reminderTime.value?.let { reminderTime ->
-                if (it != EMPTY_STRING && reminderTime >= 0) showSwitch() else hideSwitch()
+            viewModel.reminderTime?.let { reminderTime ->
+                if (it != EMPTY_STRING && reminderTime.isLaterThanNow())
+                    showSwitch() else hideSwitch()
             }
         })
         viewModel.itemStatus.observe(viewLifecycleOwner, Observer {
@@ -86,8 +88,8 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailViewModel>() {
     private fun createViewModel() {
         toDoRepository?.let {
             detailViewModel = ViewModelProviders.of(
-                    this,
-                    ViewModelFactory { DetailViewModel(it) }).get(DetailViewModel::class.java)
+                this,
+                ViewModelFactory { DetailViewModel(it) }).get(DetailViewModel::class.java)
         }
     }
 
@@ -136,16 +138,17 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailViewModel>() {
 
     private fun changeItemsColor(color: Int) {
         context?.let { context ->
-            val background = when (color) {
-                COLOR_RED -> ContextCompat.getDrawable(context, R.drawable.fragment_background_red)
-                COLOR_ORANGE -> ContextCompat.getDrawable(context, R.drawable.fragment_background_orange)
-                COLOR_YELLOW -> ContextCompat.getDrawable(context, R.drawable.fragment_background_yellow)
-                COLOR_GREEN -> ContextCompat.getDrawable(context, R.drawable.fragment_background_green)
-                COLOR_BLUE -> ContextCompat.getDrawable(context, R.drawable.fragment_background_blue)
-                COLOR_PURPLE -> ContextCompat.getDrawable(context, R.drawable.fragment_background_purple)
-                DEFAULT_COLOR -> ContextCompat.getDrawable(context, R.drawable.fragment_background_gray)
-                else -> ContextCompat.getDrawable(context, R.drawable.fragment_background_gray)
+            val backgroundId = when (color) {
+                COLOR_RED -> R.drawable.fragment_background_red
+                COLOR_ORANGE -> R.drawable.fragment_background_orange
+                COLOR_YELLOW -> R.drawable.fragment_background_yellow
+                COLOR_GREEN -> R.drawable.fragment_background_green
+                COLOR_BLUE -> R.drawable.fragment_background_blue
+                COLOR_PURPLE -> R.drawable.fragment_background_purple
+                DEFAULT_COLOR -> R.drawable.fragment_background_gray
+                else -> R.drawable.fragment_background_gray
             }
+            val background = ContextCompat.getDrawable(context, backgroundId)
             background?.let { changeColorBackground(it) }
         }
     }

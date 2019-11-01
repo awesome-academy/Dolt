@@ -37,7 +37,6 @@ class NotificationWorker(
                 .setContentTitle(inputData.getString(TITLE))
                 .setContentText(inputData.getString(PLACE))
                 .setContentIntent(getIntent(inputData.getInt(ID, DEFAULT_ID)))
-                .setAutoCancel(true)
                 .setChannelId(CHANNEL_ID)
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM))
                 .setLights(Color.WHITE, DEFAULT_LIGHT_TIME, DEFAULT_LIGHT_TIME)
