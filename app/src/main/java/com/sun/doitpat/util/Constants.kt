@@ -12,7 +12,7 @@ object Constants {
     const val TITLE = "Title"
     const val PLACE = "Place"
     const val CHANNEL_ID = "08081998"
-    const val EMPTY_SPACE = "  "
+    const val EMPTY_SPACE = " "
     const val COLOR_RED = -1876663
     const val COLOR_ORANGE = -223690
     const val COLOR_YELLOW = -16121

@@ -1,7 +1,10 @@
 package com.sun.doitpat.ui.home
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.View
+import android.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
@@ -20,7 +23,10 @@ import com.sun.doitpat.util.Constants.DEFAULT_ID
 import com.sun.doitpat.widget.ToDoWidgetProvider
 import kotlinx.android.synthetic.main.fragment_main.*
 
-class ToDoFragment : BaseFragment<FragmentMainBinding, ToDoViewModel>(), ToDoSwipeAdapter.OnSwipeItem {
+class ToDoFragment : BaseFragment<FragmentMainBinding,
+        ToDoViewModel>(),
+        ToDoSwipeAdapter.OnSwipeItem,
+        SearchView.OnQueryTextListener {
 
     override val layoutId: Int
         get() = R.layout.fragment_main
@@ -38,6 +44,7 @@ class ToDoFragment : BaseFragment<FragmentMainBinding, ToDoViewModel>(), ToDoSwi
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
         createViewModel()
     }
 
@@ -57,6 +64,18 @@ class ToDoFragment : BaseFragment<FragmentMainBinding, ToDoViewModel>(), ToDoSwi
         setEventsClick()
 
     }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        val searchMenuItem = menu.findItem(R.id.action_search_to_do)
+        (searchMenuItem?.actionView as SearchView).setOnQueryTextListener(this@ToDoFragment)
+    }
+
+    override fun onQueryTextChange(newText: String?): Boolean {
+        swipeAdapter.filter(newText.toString())
+        return true
+    }
+
+    override fun onQueryTextSubmit(query: String?) = false
 
     override fun onResume() {
         super.onResume()

@@ -42,7 +42,7 @@
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 style="@style/AppTheme"
-                android:layout_width="@dimen/dp_240"
+                android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:layout_gravity="end|bottom"
                 android:background="@color/color_transparent"
@@ -50,15 +50,6 @@
                 android:fontFamily="sans-serif-light"
                 android:theme="@style/AppTheme"
                 app:layout_collapseMode="pin">
-
-                <Button
-                    android:id="@+id/buttonSearch"
-                    android:layout_width="@dimen/dp_24"
-                    android:layout_height="@dimen/dp_24"
-                    android:layout_gravity="end|center_vertical"
-                    android:layout_marginEnd="@dimen/dp_8"
-                    android:background="@drawable/ic_search_black_24dp"
-                    android:gravity="center" />
 
             </androidx.appcompat.widget.Toolbar>
 

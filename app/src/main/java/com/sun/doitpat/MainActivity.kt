@@ -1,10 +1,13 @@
 package com.sun.doitpat
 
+import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.view.Menu
 import android.view.WindowManager
+import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import com.sun.doitpat.util.Constants.DEFAULT_CHECK_ID
@@ -22,11 +25,21 @@ class MainActivity : AppCompatActivity() {
         openDetailByRequest()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.to_do_search_menu, menu)
+        val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        (menu?.findItem(R.id.action_search_to_do)?.actionView as SearchView).apply {
+            setSearchableInfo(searchManager.getSearchableInfo(componentName))
+            isSubmitButtonEnabled = false
+        }
+        return true
+    }
+
     private fun makeStatusBarTransparent() {
         window.apply {
             setFlags(
-                    WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-                    WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
             )
             statusBarColor = Color.TRANSPARENT
         }
@@ -51,8 +64,8 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         fun getIntent(context: Context, itemId: Int) =
-                Intent(context, MainActivity::class.java).apply {
-                    putExtra(ID, itemId)
-                }
+            Intent(context, MainActivity::class.java).apply {
+                putExtra(ID, itemId)
+            }
     }
 }
