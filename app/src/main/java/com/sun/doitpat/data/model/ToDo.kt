@@ -7,6 +7,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.sun.doitpat.util.Constants.DEFAULT_ID
+import com.sun.doitpat.util.Constants.EMPTY_SPACE
 import com.sun.doitpat.util.Constants.EMPTY_STRING
 import kotlinx.android.parcel.Parcelize
 
@@ -38,4 +39,7 @@ data class ToDo(
     @ColumnInfo(name = "alertStatus")
     var alertStatus: Int = 0
 
-) : BaseObservable(), Parcelable
+) : BaseObservable(), Parcelable {
+
+    val information get() = (title + EMPTY_SPACE + description + EMPTY_SPACE + time + EMPTY_SPACE + place)
+}
