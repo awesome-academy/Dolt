@@ -17,4 +17,10 @@
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
+    <style name="RippleEffect" parent="android:Widget.TextView">
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:foreground">?attr/selectableItemBackgroundBorderless</item>
+    </style>
+
 </resources>

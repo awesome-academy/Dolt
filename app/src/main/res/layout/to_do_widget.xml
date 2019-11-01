@@ -20,7 +20,7 @@
             android:layout_marginStart="@dimen/dp_32"
             android:gravity="start"
             android:text="@string/title_app_name"
-            android:textColor="@color/color_accent"
+            android:textColor="@color/color_purple"
             android:textSize="@dimen/sp_24"
             android:textStyle="bold" />
 

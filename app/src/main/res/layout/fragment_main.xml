@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -8,8 +9,7 @@
             type="com.sun.doitpat.ui.home.ToDoViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -17,7 +17,9 @@
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tabLayout" />
 
@@ -25,8 +27,9 @@
             android:id="@+id/cardAddItem"
             android:layout_width="@dimen/dp_240"
             android:layout_height="@dimen/dp_48"
-            android:layout_marginTop="@dimen/dp_24"
-            app:cardBackgroundColor="@color/color_accent"
+            android:layout_margin="@dimen/dp_32"
+            style="@style/RippleEffect"
+            app:cardBackgroundColor="@color/color_purple"
             app:cardCornerRadius="@dimen/dp_24"
             app:cardElevation="0dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -66,7 +69,7 @@
             app:tabBackground="@color/color_background"
             app:tabGravity="center"
             app:tabIndicatorColor="@color/color_background"
-            app:tabSelectedTextColor="@color/color_accent">
+            app:tabSelectedTextColor="@color/color_purple">
 
             <com.google.android.material.tabs.TabItem
                 android:id="@+id/tabNoAlert"

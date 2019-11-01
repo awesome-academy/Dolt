@@ -52,21 +52,13 @@
                 app:layout_collapseMode="pin">
 
                 <Button
+                    android:id="@+id/buttonSearch"
                     android:layout_width="@dimen/dp_24"
                     android:layout_height="@dimen/dp_24"
                     android:layout_gravity="end|center_vertical"
                     android:layout_marginEnd="@dimen/dp_8"
                     android:background="@drawable/ic_search_black_24dp"
                     android:gravity="center" />
-
-                <Button
-                    android:layout_width="@dimen/dp_28"
-                    android:layout_height="@dimen/dp_28"
-                    android:layout_gravity="end|center_vertical"
-                    android:layout_marginEnd="@dimen/dp_8"
-                    android:background="@drawable/ic_add_black_24dp"
-                    android:gravity="center"
-                    android:visibility="gone" />
 
             </androidx.appcompat.widget.Toolbar>
 

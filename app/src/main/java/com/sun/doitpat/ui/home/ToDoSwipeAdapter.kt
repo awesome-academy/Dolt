@@ -23,6 +23,8 @@ class ToDoSwipeAdapter(private val listener: OnSwipeItem) : RecyclerSwipeAdapter
         return SwipeBindingViewHolder(binding)
     }
 
+    override fun getItemId(position: Int) = position.toLong()
+
     override fun getItemViewType(position: Int) = R.layout.item_reminder_swipe
 
     override fun getSwipeLayoutResourceId(position: Int) = R.id.layoutSwipe

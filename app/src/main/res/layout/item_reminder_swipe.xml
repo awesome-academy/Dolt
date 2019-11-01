@@ -21,20 +21,28 @@
             android:layout_height="@dimen/dp_84"
             android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/buttonDelete"
-                style="@style/Widget.AppCompat.Button.Borderless"
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="@dimen/dp_8"
-                android:background="@drawable/button_red_background"
-                android:gravity="center"
-                android:text="@string/title_delete"
-                android:textColor="@color/color_white"
-                android:textSize="@dimen/sp_16"
+                app:cardCornerRadius="@dimen/dp_24"
+                app:cardElevation="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent">
+
+                <Button
+                    android:id="@+id/buttonDelete"
+                    style="@style/RippleEffect"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/button_red_background"
+                    android:gravity="center"
+                    android:text="@string/title_delete"
+                    android:textColor="@color/color_white"
+                    android:textSize="@dimen/sp_16" />
+
+            </androidx.cardview.widget.CardView>
 
         </LinearLayout>
 
@@ -44,17 +52,25 @@
             android:layout_height="@dimen/dp_84"
             android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/buttonComplete"
-                style="@style/Widget.AppCompat.Button.Borderless"
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="@dimen/dp_8"
-                android:background="@drawable/button_green_background"
-                android:gravity="center"
-                android:text="@string/title_complete"
-                android:textColor="@color/color_white"
-                android:textSize="@dimen/sp_16" />
+                app:cardCornerRadius="@dimen/dp_24"
+                app:cardElevation="0dp">
+
+                <Button
+                    android:id="@+id/buttonComplete"
+                    style="@style/RippleEffect"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/button_green_background"
+                    android:gravity="center"
+                    android:text="@string/title_complete"
+                    android:textColor="@color/color_white"
+                    android:textSize="@dimen/sp_16" />
+
+            </androidx.cardview.widget.CardView>
 
         </LinearLayout>
 
@@ -64,87 +80,105 @@
             android:layout_height="@dimen/dp_84"
             android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/buttonUndo"
-                style="@style/Widget.AppCompat.Button.Borderless"
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="@dimen/dp_8"
-                android:background="@drawable/fragment_background_purple"
-                android:gravity="center"
-                android:text="@string/title_undo"
-                android:textColor="@color/color_white"
-                android:textSize="@dimen/sp_16" />
+                app:cardCornerRadius="@dimen/dp_24"
+                app:cardElevation="0dp">
+
+                <Button
+                    android:id="@+id/buttonUndo"
+                    style="@style/RippleEffect"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/fragment_background_purple"
+                    android:gravity="center"
+                    android:text="@string/title_undo"
+                    android:textColor="@color/color_white"
+                    android:textSize="@dimen/sp_16" />
+
+            </androidx.cardview.widget.CardView>
 
         </LinearLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layoutSurface"
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_84"
-            android:background="@drawable/fragment_background">
+            android:layout_height="match_parent"
+            app:cardCornerRadius="@dimen/dp_24"
+            app:cardElevation="0dp"
+            app:cardPreventCornerOverlap="true">
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/viewColor"
-                android:layout_width="@dimen/dp_32"
-                android:layout_height="@dimen/dp_32"
-                android:layout_marginStart="@dimen/dp_16"
-                app:cardBackgroundColor="@{todo.color}"
-                app:cardCornerRadius="@dimen/dp_24"
-                app:cardElevation="0dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layoutSurface"
+                style="@style/RippleEffect"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_84"
+                android:background="@drawable/fragment_background">
 
-            <TextView
-                android:id="@+id/textTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dp_24"
-                android:layout_marginTop="@dimen/dp_16"
-                android:gravity="center_vertical"
-                android:text="@{todo.title}"
-                android:textColor="@color/color_text"
-                android:textSize="@dimen/sp_16"
-                app:layout_constraintStart_toEndOf="@+id/viewColor"
-                app:layout_constraintTop_toTopOf="parent" />
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/viewColor"
+                    android:layout_width="@dimen/dp_32"
+                    android:layout_height="@dimen/dp_32"
+                    android:layout_marginStart="@dimen/dp_16"
+                    app:cardBackgroundColor="@{todo.color}"
+                    app:cardCornerRadius="@dimen/dp_24"
+                    app:cardElevation="0dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/textTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dp_24"
-                android:layout_marginBottom="@dimen/dp_16"
-                android:gravity="center_vertical"
-                android:text="@{todo.time}"
-                android:textSize="@dimen/sp_12"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/viewColor" />
+                <TextView
+                    android:id="@+id/textTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dp_24"
+                    android:layout_marginTop="@dimen/dp_16"
+                    android:gravity="center_vertical"
+                    android:text="@{todo.title}"
+                    android:textColor="@color/color_text"
+                    android:textSize="@dimen/sp_16"
+                    app:layout_constraintStart_toEndOf="@+id/viewColor"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <View
-                android:layout_width="@dimen/dp_4"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dp_2"
-                android:layout_marginEnd="@dimen/dp_16"
-                android:layout_marginBottom="@dimen/dp_16"
-                android:gravity="center_vertical"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/textTime" />
+                <TextView
+                    android:id="@+id/textTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dp_24"
+                    android:layout_marginBottom="@dimen/dp_16"
+                    android:gravity="center_vertical"
+                    android:text="@{todo.time}"
+                    android:textSize="@dimen/sp_12"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/viewColor" />
 
-            <TextView
-                android:id="@+id/textPlace"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dp_4"
-                android:layout_marginEnd="@dimen/dp_16"
-                android:layout_marginBottom="@dimen/dp_16"
-                android:gravity="center_vertical"
-                android:text="@{todo.place}"
-                android:textSize="@dimen/sp_12"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/textTime" />
+                <View
+                    android:layout_width="@dimen/dp_4"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dp_2"
+                    android:layout_marginEnd="@dimen/dp_16"
+                    android:layout_marginBottom="@dimen/dp_16"
+                    android:gravity="center_vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/textTime" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <TextView
+                    android:id="@+id/textPlace"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dp_4"
+                    android:layout_marginEnd="@dimen/dp_16"
+                    android:layout_marginBottom="@dimen/dp_16"
+                    android:gravity="center_vertical"
+                    android:text="@{todo.place}"
+                    android:textSize="@dimen/sp_12"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/textTime" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
 
     </com.daimajia.swipe.SwipeLayout>
 
