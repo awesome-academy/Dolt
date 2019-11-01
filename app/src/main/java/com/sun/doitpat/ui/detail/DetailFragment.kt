@@ -24,9 +24,11 @@ import com.sun.doitpat.util.Constants.COLOR_ORANGE
 import com.sun.doitpat.util.Constants.COLOR_PURPLE
 import com.sun.doitpat.util.Constants.COLOR_RED
 import com.sun.doitpat.util.Constants.COLOR_YELLOW
+import com.sun.doitpat.util.Constants.COMPLETED
 import com.sun.doitpat.util.Constants.DEFAULT_COLOR
 import com.sun.doitpat.util.Constants.DEFAULT_ID
 import com.sun.doitpat.util.Constants.EMPTY_STRING
+import com.sun.doitpat.util.Constants.NEW
 import com.sun.doitpat.util.Constants.NO_ALERT
 import kotlinx.android.synthetic.main.fragment_detail.*
 import java.util.*
@@ -68,7 +70,17 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailViewModel>() {
                 if (it != EMPTY_STRING && reminderTime >= 0) showSwitch() else hideSwitch()
             }
         })
+        viewModel.itemStatus.observe(viewLifecycleOwner, Observer {
+            setCheckCompletedStatus(it)
+        })
         setEventsClick()
+    }
+
+    private fun setCheckCompletedStatus(status: Int) {
+        checkCompleted.isChecked = when (status) {
+            NEW -> false
+            else -> true
+        }
     }
 
     private fun createViewModel() {
@@ -99,22 +111,26 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailViewModel>() {
     }
 
     private fun setEventsClick() {
-        textSetTime.setOnClickListener {
+        cardSetTime.setOnClickListener {
             showTimeChooserDialog()
         }
-        textClearTime.setOnClickListener {
+        cardClearTime.setOnClickListener {
             viewModel.clearTime()
         }
-        switchReminder.setOnClickListener {
-            if (switchReminder.isChecked) viewModel.setReminder(ALERT)
+        checkReminder.setOnClickListener {
+            if (checkReminder.isChecked) viewModel.setReminder(ALERT)
             else viewModel.setReminder(NO_ALERT)
         }
-        buttonSave.setOnClickListener {
+        cardSave.setOnClickListener {
             viewModel.addToDo()
             Navigation.findNavController(it).popBackStack()
         }
-        buttonCancel.setOnClickListener {
+        cardCancel.setOnClickListener {
             Navigation.findNavController(it).popBackStack()
+        }
+        checkCompleted.setOnClickListener {
+            if (checkCompleted.isChecked) viewModel.setCompletedStatus(COMPLETED)
+            else viewModel.setCompletedStatus(NEW)
         }
     }
 
@@ -140,15 +156,15 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailViewModel>() {
     }
 
     private fun setSwitchStatus(alertStatus: Int) {
-        switchReminder.isChecked = alertStatus != NO_ALERT
+        checkReminder.isChecked = alertStatus != NO_ALERT
     }
 
     private fun showSwitch() {
-        switchReminder.visibility = View.VISIBLE
+        checkReminder.visibility = View.VISIBLE
     }
 
     private fun hideSwitch() {
-        switchReminder.visibility = View.GONE
+        checkReminder.visibility = View.GONE
     }
 
 }

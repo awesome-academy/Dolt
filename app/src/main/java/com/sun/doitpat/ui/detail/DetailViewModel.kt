@@ -23,6 +23,7 @@ import com.sun.doitpat.util.Constants.COLOR_RED
 import com.sun.doitpat.util.Constants.COLOR_YELLOW
 import com.sun.doitpat.util.Constants.DEFAULT_CHECK_ID
 import com.sun.doitpat.util.Constants.DEFAULT_COLOR
+import com.sun.doitpat.util.Constants.NEW
 import com.sun.doitpat.util.Constants.NO_ALERT
 import com.sun.doitpat.util.TimeUtils
 import kotlinx.coroutines.launch
@@ -43,6 +44,7 @@ class DetailViewModel(private val toDoRepository: ToDoRepository) : BaseViewMode
     val color = MutableLiveData(DEFAULT_COLOR)
     val alertStatus = MutableLiveData(0)
     val reminderTime = MutableLiveData(0L)
+    val itemStatus = MutableLiveData(NEW)
 
     private fun setData() {
         item.value?.let {
@@ -52,6 +54,7 @@ class DetailViewModel(private val toDoRepository: ToDoRepository) : BaseViewMode
             place.value = it.place
             color.value = it.color
             alertStatus.value = it.alertStatus
+            itemStatus.value = it.status
         }
     }
 
@@ -114,7 +117,8 @@ class DetailViewModel(private val toDoRepository: ToDoRepository) : BaseViewMode
                     time = time.value.toString(),
                     place = place.value.toString(),
                     alertStatus = alertStatus.value.toString().toInt(),
-                    color = color.value.toString().toInt())
+                    color = color.value.toString().toInt(),
+                    status = itemStatus.value.toString().toInt())
             toDo?.let { toDoRepository.insertToDo(it) }
         }
         item.value?.id?.let { createNotification(it) }
@@ -144,6 +148,10 @@ class DetailViewModel(private val toDoRepository: ToDoRepository) : BaseViewMode
             setNewData()
             editStatus = ADD_MODE
         }
+    }
+
+    fun setCompletedStatus(status: Int) {
+        this.itemStatus.value = status
     }
 
     companion object {

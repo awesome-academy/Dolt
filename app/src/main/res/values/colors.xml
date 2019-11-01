@@ -2,7 +2,7 @@
 <resources>
     <color name="color_primary">#F2F2F2</color>
     <color name="color_primary_dark">#F2F2F2</color>
-    <color name="color_accent">#5B55D2</color>
+    <color name="color_accent">#000000</color>
     <color name="color_background">#F2F2F2</color>
     <color name="color_fragment_background">#FFFFFF</color>
     <color name="color_border">#D6D6D6</color>
@@ -16,4 +16,5 @@
     <color name="color_green">#96CE1F</color>
     <color name="color_blue">#3CA1FF</color>
     <color name="color_gray">#D6D6D6</color>
+    <color name="color_purple">#5B55D2</color>
 </resources>

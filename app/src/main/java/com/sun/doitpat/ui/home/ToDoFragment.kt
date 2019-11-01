@@ -1,6 +1,5 @@
 package com.sun.doitpat.ui.home
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
@@ -17,10 +16,7 @@ import com.sun.doitpat.data.repository.ToDoRepository
 import com.sun.doitpat.data.repository.impl.ToDoRepositoryImpl
 import com.sun.doitpat.data.source.local.AppDatabase
 import com.sun.doitpat.databinding.FragmentMainBinding
-import com.sun.doitpat.util.Constants.BUNDLE_EXTRA
 import com.sun.doitpat.util.Constants.DEFAULT_ID
-import com.sun.doitpat.util.Constants.ITEMS_EXTRA
-import com.sun.doitpat.util.Constants.WIDGET_UPDATE_FROM_APP_ACTION
 import com.sun.doitpat.widget.ToDoWidgetProvider
 import kotlinx.android.synthetic.main.fragment_main.*
 
@@ -54,7 +50,6 @@ class ToDoFragment : BaseFragment<FragmentMainBinding, ToDoViewModel>(), ToDoSwi
         }
         viewModel.list.observe(viewLifecycleOwner, Observer {
             swipeAdapter.submitList(it)
-
         })
         viewModel.widgetList.observe(viewLifecycleOwner, Observer {
             broadcastToWidget(ArrayList(it))
@@ -66,7 +61,6 @@ class ToDoFragment : BaseFragment<FragmentMainBinding, ToDoViewModel>(), ToDoSwi
     override fun onResume() {
         super.onResume()
         viewModel.getNoAlertToDo()
-
     }
 
     override fun onClickComplete(item: ToDo) {

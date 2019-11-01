@@ -1,11 +1,11 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="title_app_name">Reminder</string>
     <string name="title_add_item">Add A New Item</string>
     <string name="title_title">Title</string>
     <string name="title_description">Description</string>
     <string name="title_place">Place</string>
-    <string name="title_cancel">Cancel</string>
-    <string name="title_save">Save</string>
+    <string name="title_cancel" tools:ignore="ButtonCase">CANCEL</string>
+    <string name="title_save">SAVE</string>
     <string name="title_delete">Delete</string>
     <string name="title_complete">Complete</string>
     <string name="title_no_alert">No Alert</string>
@@ -14,4 +14,6 @@
     <string name="title_undo">Undo</string>
     <string name="title_alert">Alert</string>
     <string name="title_alert_option">Remind Me</string>
+    <string name="title_mark_completed">Mark as Completed</string>
+    <string name="title_add_item_toolbar_title">Add Reminder</string>
 </resources>
