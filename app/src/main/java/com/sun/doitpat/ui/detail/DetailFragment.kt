@@ -4,6 +4,7 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.transition.TransitionInflater
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProviders
@@ -55,6 +56,8 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailViewModel>() {
         createViewModel()
         arguments?.let { itemId = it.getInt(resources.getString(R.string.title_title)) }
         viewModel.getToDo(itemId)
+        enterTransition =
+            TransitionInflater.from(context).inflateTransition(android.R.transition.slide_bottom)
 
     }
 

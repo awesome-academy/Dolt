@@ -49,28 +49,28 @@ class ToDoSwipeAdapter(private val listener: OnSwipeItem) : RecyclerSwipeAdapter
                         (items[position].alertStatus == ALERT))
                         View.VISIBLE else View.GONE
             }
-            buttonComplete.visibility = View.GONE
-            buttonUndo.visibility = View.GONE
+            cardComplete.visibility = View.GONE
+            cardUndo.visibility = View.GONE
 
             if (items[position].status == COMPLETED) {
-                buttonUndo.visibility = View.VISIBLE
+                cardUndo.visibility = View.VISIBLE
                 layoutSwipe.addDrag(SwipeLayout.DragEdge.Right, this.findViewById(R.id.layoutUndo))
-                buttonUndo.setOnClickListener {
+                cardUndo.setOnClickListener {
                     listener.onClickUndo(items[position])
                     holder.close()
                     removeItem(position)
                 }
             } else {
-                buttonComplete.visibility = View.VISIBLE
+                cardComplete.visibility = View.VISIBLE
                 layoutSwipe.addDrag(SwipeLayout.DragEdge.Right, this.findViewById(R.id.layoutComplete))
-                buttonComplete.setOnClickListener {
+                cardComplete.setOnClickListener {
                     listener.onClickComplete(items[position])
                     holder.close()
                     removeItem(position)
                 }
             }
 
-            buttonDelete.setOnClickListener {
+            cardDelete.setOnClickListener {
                 listener.onClickDelete(items[position])
                 holder.close()
                 removeItem(position)

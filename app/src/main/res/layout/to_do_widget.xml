@@ -33,13 +33,29 @@
 
     </LinearLayout>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/px_1"
+        android:layout_marginTop="@dimen/dp_16"
+        android:background="@color/color_border" />
+
     <ListView
         android:id="@+id/listWidgetItems"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:divider="@color/color_border"
         android:dividerHeight="@dimen/px_1"
-        android:padding="@dimen/dp_24"
+        android:paddingStart="@dimen/dp_24"
+        android:paddingTop="@dimen/dp_8"
+        android:paddingEnd="@dimen/dp_24"
+        android:paddingBottom="@dimen/dp_24"
         android:scrollbarSize="0dp" />
+
+    <TextView
+        android:id="@+id/textWidgetEmptyList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="@string/title_empty_list" />
 
 </LinearLayout>

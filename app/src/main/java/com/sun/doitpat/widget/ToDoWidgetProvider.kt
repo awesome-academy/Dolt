@@ -34,7 +34,7 @@ class ToDoWidgetProvider : AppWidgetProvider() {
         }
         context?.let { _context ->
             val appWidgetIds = getInstance(_context).getAppWidgetIds(
-                    ComponentName(_context, this::class.java))
+                ComponentName(_context, this::class.java))
             updateWidget(_context, appWidgetIds)
         }
     }
@@ -46,13 +46,14 @@ class ToDoWidgetProvider : AppWidgetProvider() {
         val itemClickIntent = Intent(context, MainActivity::class.java)
 
         val pendingIntent = TaskStackBuilder.create(context)
-                .addNextIntentWithParentStack(itemClickIntent)
-                .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)
+            .addNextIntentWithParentStack(itemClickIntent)
+            .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)
         val openAppPendingIntent = PendingIntent.getActivity(context, 0, openAppClickIntent, 0)
         widgetRemoteView.apply {
             setOnClickPendingIntent(R.id.buttonWidgetAdd, getIntent(context, DEFAULT_ID))
             setOnClickPendingIntent(R.id.textWidgetTitle, openAppPendingIntent)
             setRemoteAdapter(R.id.listWidgetItems, WidgetService.getIntent(context))
+            setEmptyView(R.id.listWidgetItems, R.id.textWidgetEmptyList)
             setPendingIntentTemplate(R.id.listWidgetItems, pendingIntent)
         }
 
@@ -73,12 +74,12 @@ class ToDoWidgetProvider : AppWidgetProvider() {
 
     companion object {
         fun getIntent(context: Context, items: ArrayList<ToDo>) =
-                Intent(context, ToDoWidgetProvider::class.java).apply {
-                    action = WIDGET_UPDATE_FROM_APP_ACTION
-                    putExtra(BUNDLE_EXTRA, Bundle().apply {
-                        putParcelableArrayList(Constants.ITEMS_EXTRA, items)
-                    })
-                }
+            Intent(context, ToDoWidgetProvider::class.java).apply {
+                action = WIDGET_UPDATE_FROM_APP_ACTION
+                putExtra(BUNDLE_EXTRA, Bundle().apply {
+                    putParcelableArrayList(Constants.ITEMS_EXTRA, items)
+                })
+            }
 
     }
 
