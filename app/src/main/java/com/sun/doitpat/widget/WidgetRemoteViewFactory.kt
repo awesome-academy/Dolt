@@ -20,10 +20,11 @@ import com.sun.doitpat.util.Constants.EMPTY_SPACE
 import com.sun.doitpat.util.Constants.EXTRA
 import com.sun.doitpat.util.Constants.ITEMS_EXTRA
 import com.sun.doitpat.util.Constants.NO_ALERT
+import com.sun.doitpat.util.isLaterThanNow
 
 class WidgetRemoteViewFactory(
-        private val context: Context,
-        private val intent: Intent?) : RemoteViewsService.RemoteViewsFactory {
+    private val context: Context,
+    private val intent: Intent?) : RemoteViewsService.RemoteViewsFactory {
 
     private var items: ArrayList<ToDo>? = arrayListOf()
 
@@ -38,10 +39,15 @@ class WidgetRemoteViewFactory(
     override fun getViewAt(position: Int): RemoteViews {
         val fillIntent = Intent().apply { putExtra(EXTRA, items?.get(position)?.id) }
         val remoteView = RemoteViews(context.packageName, R.layout.item_to_do_widget)
+
         when (items?.get(position)?.alertStatus) {
             NO_ALERT -> remoteView.setViewVisibility(R.id.textAlertStatus, View.GONE)
             ALERT -> remoteView.setViewVisibility(R.id.textAlertStatus, View.VISIBLE)
             else -> remoteView.setViewVisibility(R.id.textAlertStatus, View.GONE)
+        }
+        items?.get(position)?.createdTimeMillisecond?.let {
+            if (!it.isLaterThanNow())
+                remoteView.setViewVisibility(R.id.textAlertStatus, View.GONE)
         }
 
         remoteView.apply {
@@ -53,25 +59,26 @@ class WidgetRemoteViewFactory(
             setViewVisibility(R.id.textColorYellow, View.GONE)
             setViewVisibility(R.id.textColorDefault, View.GONE)
             setTextViewText(
-                    R.id.textWidgetItemTitle,
-                    items?.get(position)?.title)
+                R.id.textWidgetItemTitle,
+                items?.get(position)?.title)
             setTextViewText(
-                    R.id.textWidgetItemInformation,
-                    items?.get(position)?.time + EMPTY_SPACE + items?.get(position)?.place)
+                R.id.textWidgetItemInformation,
+                items?.get(position)?.time + EMPTY_SPACE + items?.get(position)?.place)
             setOnClickFillInIntent(R.id.layoutWidgetItem, fillIntent)
         }
 
         items?.get(position)?.let {
-            when (it.color) {
-                COLOR_RED -> remoteView.setViewVisibility(R.id.textColorRed, View.VISIBLE)
-                COLOR_ORANGE -> remoteView.setViewVisibility(R.id.textColorOrange, View.VISIBLE)
-                COLOR_GREEN -> remoteView.setViewVisibility(R.id.textColorGreen, View.VISIBLE)
-                COLOR_BLUE -> remoteView.setViewVisibility(R.id.textColorBlue, View.VISIBLE)
-                COLOR_PURPLE -> remoteView.setViewVisibility(R.id.textColorPurple, View.VISIBLE)
-                COLOR_YELLOW -> remoteView.setViewVisibility(R.id.textColorYellow, View.VISIBLE)
-                DEFAULT_COLOR -> remoteView.setViewVisibility(R.id.textColorDefault, View.VISIBLE)
-                else -> remoteView.setViewVisibility(R.id.textColorDefault, View.VISIBLE)
+            val colorId = when (it.color) {
+                COLOR_RED -> R.id.textColorRed
+                COLOR_ORANGE -> R.id.textColorOrange
+                COLOR_GREEN -> R.id.textColorGreen
+                COLOR_BLUE -> R.id.textColorBlue
+                COLOR_PURPLE -> R.id.textColorPurple
+                COLOR_YELLOW -> R.id.textColorYellow
+                DEFAULT_COLOR -> R.id.textColorDefault
+                else -> R.id.textColorDefault
             }
+            remoteView.setViewVisibility(colorId, View.VISIBLE)
         }
         return remoteView
     }

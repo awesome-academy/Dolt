@@ -24,9 +24,9 @@ import com.sun.doitpat.widget.ToDoWidgetProvider
 import kotlinx.android.synthetic.main.fragment_main.*
 
 class ToDoFragment : BaseFragment<FragmentMainBinding,
-        ToDoViewModel>(),
-        ToDoSwipeAdapter.OnSwipeItem,
-        SearchView.OnQueryTextListener {
+    ToDoViewModel>(),
+    ToDoSwipeAdapter.OnSwipeItem,
+    SearchView.OnQueryTextListener {
 
     override val layoutId: Int
         get() = R.layout.fragment_main
@@ -56,12 +56,14 @@ class ToDoFragment : BaseFragment<FragmentMainBinding,
             adapter = swipeAdapter
         }
         viewModel.list.observe(viewLifecycleOwner, Observer {
+            if (it.isEmpty()) showEmptyText() else hideEmptyText()
             swipeAdapter.submitList(it)
         })
         viewModel.widgetList.observe(viewLifecycleOwner, Observer {
             broadcastToWidget(ArrayList(it))
         })
         setEventsClick()
+        showEmptyText()
 
     }
 
@@ -103,8 +105,8 @@ class ToDoFragment : BaseFragment<FragmentMainBinding,
     private fun createViewModel() {
         toDoRepository?.let {
             toDoViewModel = ViewModelProviders.of(
-                    this,
-                    ViewModelFactory { ToDoViewModel(it) }).get(ToDoViewModel::class.java)
+                this,
+                ViewModelFactory { ToDoViewModel(it) }).get(ToDoViewModel::class.java)
         }
     }
 
@@ -152,6 +154,14 @@ class ToDoFragment : BaseFragment<FragmentMainBinding,
 
     private fun getCompletedToDo() {
         viewModel.getCompletedToDo()
+    }
+
+    private fun showEmptyText() {
+        textEmptyList.visibility = View.VISIBLE
+    }
+
+    private fun hideEmptyText() {
+        textEmptyList.visibility = View.GONE
     }
 
     companion object {

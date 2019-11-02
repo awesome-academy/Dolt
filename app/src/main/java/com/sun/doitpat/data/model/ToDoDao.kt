@@ -10,7 +10,7 @@ interface ToDoDao {
     suspend fun getWidgetToDo(): List<ToDo>
 
     @Query("SELECT id FROM $TODO_TABLE_NAME WHERE id = (SELECT MAX(id) FROM $TODO_TABLE_NAME)")
-    suspend fun getNewToDoId(): Int
+    suspend fun getNewToDoId(): Int?
 
     @Query("SELECT * FROM $TODO_TABLE_NAME WHERE alertStatus = 0 AND status != $COMPLETED")
     suspend fun getNoAlertToDo(): List<ToDo>
@@ -22,7 +22,7 @@ interface ToDoDao {
     suspend fun getCompletedToDo(): List<ToDo>
 
     @Query("SELECT * FROM $TODO_TABLE_NAME WHERE id = :id")
-    suspend fun getToDoById(id: Int): ToDo
+    suspend fun getToDoById(id: Int): ToDo?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(toDo: ToDo)

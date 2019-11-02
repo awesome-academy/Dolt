@@ -1,6 +1,7 @@
 package com.sun.doitpat.ui.home
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
@@ -9,9 +10,11 @@ import com.daimajia.swipe.adapters.RecyclerSwipeAdapter
 import com.sun.doitpat.R
 import com.sun.doitpat.base.SwipeBindingViewHolder
 import com.sun.doitpat.data.model.ToDo
+import com.sun.doitpat.util.Constants.ALERT
 import com.sun.doitpat.util.Constants.COMPLETED
 import com.sun.doitpat.util.Constants.EMPTY_STRING
 import com.sun.doitpat.util.isContains
+import com.sun.doitpat.util.isLaterThanNow
 import kotlinx.android.synthetic.main.item_reminder_swipe.view.*
 
 class ToDoSwipeAdapter(private val listener: OnSwipeItem) : RecyclerSwipeAdapter<SwipeBindingViewHolder<ToDo>>() {
@@ -24,7 +27,7 @@ class ToDoSwipeAdapter(private val listener: OnSwipeItem) : RecyclerSwipeAdapter
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SwipeBindingViewHolder<ToDo> {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding =
-                DataBindingUtil.inflate<ViewDataBinding>(layoutInflater, viewType, parent, false)
+            DataBindingUtil.inflate<ViewDataBinding>(layoutInflater, viewType, parent, false)
         return SwipeBindingViewHolder(binding)
     }
 
@@ -40,8 +43,17 @@ class ToDoSwipeAdapter(private val listener: OnSwipeItem) : RecyclerSwipeAdapter
 
         holder.bind(items[position])
         holder.itemView.apply {
+            items[position].createdTimeMillisecond?.let {
+                textAlarmSign.visibility =
+                    if ((it.isLaterThanNow()) &&
+                        (items[position].alertStatus == ALERT))
+                        View.VISIBLE else View.GONE
+            }
+            buttonComplete.visibility = View.GONE
+            buttonUndo.visibility = View.GONE
 
             if (items[position].status == COMPLETED) {
+                buttonUndo.visibility = View.VISIBLE
                 layoutSwipe.addDrag(SwipeLayout.DragEdge.Right, this.findViewById(R.id.layoutUndo))
                 buttonUndo.setOnClickListener {
                     listener.onClickUndo(items[position])
@@ -49,6 +61,7 @@ class ToDoSwipeAdapter(private val listener: OnSwipeItem) : RecyclerSwipeAdapter
                     removeItem(position)
                 }
             } else {
+                buttonComplete.visibility = View.VISIBLE
                 layoutSwipe.addDrag(SwipeLayout.DragEdge.Right, this.findViewById(R.id.layoutComplete))
                 buttonComplete.setOnClickListener {
                     listener.onClickComplete(items[position])
@@ -95,7 +108,7 @@ class ToDoSwipeAdapter(private val listener: OnSwipeItem) : RecyclerSwipeAdapter
     fun filter(filterString: String) {
         refreshList()
         filteredItems =
-                items.filter { it.information.isContains(filterString) }.toMutableList()
+            items.filter { it.information.isContains(filterString) }.toMutableList()
         submitFilterList(filteredItems)
         currentFilterText = filterString
     }

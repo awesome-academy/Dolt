@@ -9,6 +9,7 @@ import com.sun.doitpat.data.model.ToDo
 import com.sun.doitpat.data.repository.ToDoRepository
 import com.sun.doitpat.util.Constants.COMPLETED
 import com.sun.doitpat.util.Constants.NEW
+import com.sun.doitpat.util.Constants.NO_ALERT
 import kotlinx.coroutines.launch
 
 class ToDoViewModel(private val toDoRepository: ToDoRepository) : BaseViewModel() {
@@ -51,7 +52,7 @@ class ToDoViewModel(private val toDoRepository: ToDoRepository) : BaseViewModel(
 
     fun undoItem(toDo: ToDo) {
         viewModelScope.launch {
-            toDoRepository.updateToDo(toDo.copy(status = NEW))
+            toDoRepository.updateToDo(toDo.copy(status = NEW, alertStatus = NO_ALERT))
             _widgetList.value = toDoRepository.getAllToDo().asReversed()
         }
     }

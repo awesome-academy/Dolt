@@ -37,7 +37,10 @@ data class ToDo(
     var status: Int = 0,
 
     @ColumnInfo(name = "alertStatus")
-    var alertStatus: Int = 0
+    var alertStatus: Int = 0,
+
+    @ColumnInfo(name = "createdTimeMillisecond")
+    var createdTimeMillisecond: Long? = 0
 
 ) : BaseObservable(), Parcelable {
 
