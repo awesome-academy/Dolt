@@ -20,27 +20,28 @@ import com.sun.doitpat.util.Constants.PLACE
 import com.sun.doitpat.util.Constants.TITLE
 
 class NotificationWorker(
-        private val context: Context,
-        params: WorkerParameters
+    private val context: Context,
+    params: WorkerParameters
 ) : Worker(context, params) {
 
     override fun doWork(): Result {
         val notificationManager =
-                context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val priorityStatus = NotificationManager.IMPORTANCE_DEFAULT
             val notificationChannel = NotificationChannel(CHANNEL_ID, NOTIFICATION_NAME, priorityStatus)
             notificationManager.createNotificationChannel(notificationChannel)
         }
         val notification = NotificationCompat.Builder(context, CHANNEL_ID)
-                .setSmallIcon(R.mipmap.ic_launcher_round)
-                .setContentTitle(inputData.getString(TITLE))
-                .setContentText(inputData.getString(PLACE))
-                .setContentIntent(getIntent(inputData.getInt(ID, DEFAULT_ID)))
-                .setChannelId(CHANNEL_ID)
-                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM))
-                .setLights(Color.WHITE, DEFAULT_LIGHT_TIME, DEFAULT_LIGHT_TIME)
-                .build()
+            .setSmallIcon(R.mipmap.ic_launcher_round)
+            .setContentTitle(inputData.getString(TITLE))
+            .setContentText(inputData.getString(PLACE))
+            .setAutoCancel(true)
+            .setContentIntent(getIntent(inputData.getInt(ID, DEFAULT_ID)))
+            .setChannelId(CHANNEL_ID)
+            .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM))
+            .setLights(Color.WHITE, DEFAULT_LIGHT_TIME, DEFAULT_LIGHT_TIME)
+            .build()
         notificationManager.notify(inputData.getInt(ID, 0), notification)
         return Result.success()
     }

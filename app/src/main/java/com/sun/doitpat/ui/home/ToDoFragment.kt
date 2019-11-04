@@ -69,7 +69,7 @@ class ToDoFragment : BaseFragment<FragmentMainBinding,
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         val searchMenuItem = menu.findItem(R.id.action_search_to_do)
-        (searchMenuItem?.actionView as SearchView).setOnQueryTextListener(this@ToDoFragment)
+        (searchMenuItem.actionView as SearchView).setOnQueryTextListener(this@ToDoFragment)
     }
 
     override fun onQueryTextChange(newText: String?): Boolean {
@@ -82,6 +82,7 @@ class ToDoFragment : BaseFragment<FragmentMainBinding,
     override fun onResume() {
         super.onResume()
         viewModel.getNoAlertToDo()
+        tabLayout.getTabAt(NO_ALERT_TAB)?.select()
     }
 
     override fun onClickComplete(item: ToDo) {
@@ -140,7 +141,9 @@ class ToDoFragment : BaseFragment<FragmentMainBinding,
 
     private fun broadcastToWidget(items: ArrayList<ToDo>?) {
         context?.let {
-            items?.let { _items -> activity?.sendBroadcast(ToDoWidgetProvider.getIntent(it, _items)) }
+            items?.let { _items ->
+                activity?.sendBroadcast(ToDoWidgetProvider.getIntent(it, _items))
+            }
         }
     }
 

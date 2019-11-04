@@ -58,7 +58,6 @@ class DetailViewModel(private val toDoRepository: ToDoRepository) : BaseViewMode
             alertStatus.value = it.alertStatus
             itemStatus.value = it.status
             _reminderTime.value = it.createdTimeMillisecond
-            if (editStatus == EDIT_MODE) WorkManager.getInstance().cancelAllWorkByTag(it.id.toString())
         }
     }
 
@@ -83,12 +82,14 @@ class DetailViewModel(private val toDoRepository: ToDoRepository) : BaseViewMode
             .putString(TITLE, title.value?.toString())
             .putString(PLACE, place.value?.toString())
             .build()
-        val oneTimeWorkerRequest = OneTimeWorkRequest.Builder(NotificationWorker::class.java)
-            .setInitialDelay(_reminderTime.value.toString().toLong() - System.currentTimeMillis(),
-                TimeUnit.MILLISECONDS)
-            .addTag(id.toString())
-            .setInputData(notificationData)
-            .build()
+        val oneTimeWorkerRequest =
+            OneTimeWorkRequest.Builder(NotificationWorker::class.java)
+                .setInitialDelay(
+                    _reminderTime.value.toString().toLong() - System.currentTimeMillis(),
+                    TimeUnit.MILLISECONDS)
+                .addTag(id.toString())
+                .setInputData(notificationData)
+                .build()
         WorkManager.getInstance().enqueue(oneTimeWorkerRequest)
     }
 
@@ -128,6 +129,7 @@ class DetailViewModel(private val toDoRepository: ToDoRepository) : BaseViewMode
 
     private fun createNotification(id: Int) {
         _reminderTime.value?.let {
+            if (editStatus == EDIT_MODE) WorkManager.getInstance().cancelAllWorkByTag(id.toString())
             if (alertStatus.value == ALERT && it.isLaterThanNow()) setAlarm(id)
         }
     }
@@ -139,6 +141,7 @@ class DetailViewModel(private val toDoRepository: ToDoRepository) : BaseViewMode
 
     fun setReminder(alertStatus: Int) {
         this.alertStatus.value = alertStatus
+        if (alertStatus == ALERT) itemStatus.value = NEW
     }
 
     fun getToDo(id: Int) {
@@ -156,6 +159,7 @@ class DetailViewModel(private val toDoRepository: ToDoRepository) : BaseViewMode
 
     fun setCompletedStatus(status: Int) {
         this.itemStatus.value = status
+        this.alertStatus.value = NO_ALERT
     }
 
     companion object {

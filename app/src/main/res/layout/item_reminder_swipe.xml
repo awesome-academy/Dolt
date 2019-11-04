@@ -22,25 +22,24 @@
             android:orientation="horizontal">
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/cardDelete"
+                style="@style/RippleEffect"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="@dimen/dp_8"
+                app:cardBackgroundColor="@color/design_default_color_error"
                 app:cardCornerRadius="@dimen/dp_24"
                 app:cardElevation="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <Button
-                    android:id="@+id/buttonDelete"
-                    style="@style/RippleEffect"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/button_red_background"
-                    android:gravity="center"
-                    android:text="@string/title_delete"
-                    android:textColor="@color/color_white"
-                    android:textSize="@dimen/sp_16" />
+                <View
+                    android:layout_width="@dimen/dp_32"
+                    android:layout_height="@dimen/dp_32"
+                    android:layout_gravity="center"
+                    android:background="@drawable/ic_close_black_24dp"
+                    android:gravity="center" />
 
             </androidx.cardview.widget.CardView>
 
@@ -53,22 +52,21 @@
             android:orientation="horizontal">
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/cardComplete"
+                style="@style/RippleEffect"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="@dimen/dp_8"
+                app:cardBackgroundColor="@color/color_green"
                 app:cardCornerRadius="@dimen/dp_24"
                 app:cardElevation="0dp">
 
-                <Button
-                    android:id="@+id/buttonComplete"
-                    style="@style/RippleEffect"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/button_green_background"
-                    android:gravity="center"
-                    android:text="@string/title_complete"
-                    android:textColor="@color/color_white"
-                    android:textSize="@dimen/sp_16" />
+                <View
+                    android:layout_width="@dimen/dp_32"
+                    android:layout_height="@dimen/dp_32"
+                    android:layout_gravity="center"
+                    android:background="@drawable/ic_check_black_24dp"
+                    android:gravity="center" />
 
             </androidx.cardview.widget.CardView>
 
@@ -81,22 +79,21 @@
             android:orientation="horizontal">
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/cardUndo"
+                style="@style/RippleEffect"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="@dimen/dp_8"
+                app:cardBackgroundColor="@color/color_purple"
                 app:cardCornerRadius="@dimen/dp_24"
                 app:cardElevation="0dp">
 
-                <Button
-                    android:id="@+id/buttonUndo"
-                    style="@style/RippleEffect"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/fragment_background_purple"
-                    android:gravity="center"
-                    android:text="@string/title_undo"
-                    android:textColor="@color/color_white"
-                    android:textSize="@dimen/sp_16" />
+                <View
+                    android:layout_width="@dimen/dp_32"
+                    android:layout_height="@dimen/dp_32"
+                    android:layout_gravity="center"
+                    android:background="@drawable/ic_restore_black_24dp"
+                    android:gravity="center" />
 
             </androidx.cardview.widget.CardView>
 
